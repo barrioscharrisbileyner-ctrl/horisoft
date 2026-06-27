@@ -1,0 +1,53 @@
+{% extends 'residentes/base.html' %}
+{% block titulo %}Residentes{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Residentes</h2>
+  <a href="{% url 'residentes:persona_crear' %}" class="btn btn-success">+ Nuevo residente</a>
+</div>
+<table class="table table-striped table-hover align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Documento</th><th>Nombre</th><th>Teléfono</th><th>Email</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for persona in personas %}
+    <tr>
+      <td>{{ persona.numero_documento }}</td>
+      <td>{{ persona.nombre }}</td>
+      <td>{{ persona.telefono|default:"—" }}</td>
+      <td>{{ persona.email|default:"—" }}</td>
+      <td class="text-end">
+        <a href="{% url 'residentes:persona_editar' persona.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+        <form method="post" action="{% url 'residentes:persona_eliminar' persona.pk %}" class="d-inline"
+              onsubmit="return confirm('¿Eliminar a {{ persona.nombre }}? Esta acción no se puede deshacer.');">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="text-center text-muted">No hay residentes registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if personas.paginator.num_pages > 1 %}
+<nav>
+  <ul class="pagination justify-content-center">
+    {% if personas.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ personas.previous_page_number }}">« Anterior</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">« Anterior</span></li>
+    {% endif %}
+    <li class="page-item active"><span class="page-link">Página {{ personas.number }} de {{ personas.paginator.num_pages }}</span></li>
+    {% if personas.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ personas.next_page_number }}">Siguiente »</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Siguiente »</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}

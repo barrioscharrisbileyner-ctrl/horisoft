@@ -1,0 +1,60 @@
+{% extends 'residentes/base.html' %}
+{% block titulo %}Residencias{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Residencias <small class="text-muted fs-6">(asociación residente ↔ unidad)</small></h2>
+  <a href="{% url 'residentes:residencia_crear' %}" class="btn btn-success">+ Asociar residente a unidad</a>
+</div>
+<table class="table table-striped table-hover align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Residente</th><th>Unidad</th><th>Rol</th><th>Desde</th><th>Estado</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for residencia in residencias %}
+    <tr>
+      <td>{{ residencia.persona.nombre }}</td>
+      <td>{{ residencia.unidad.numero_unidad }}</td>
+      <td>{{ residencia.get_rol_display }}</td>
+      <td>{{ residencia.fecha_inicio|date:"d/m/Y" }}</td>
+      <td>
+        {% if residencia.activo %}
+          <span class="badge bg-success">Activa</span>
+        {% else %}
+          <span class="badge bg-secondary">Inactiva</span>
+        {% endif %}
+      </td>
+      <td class="text-end">
+        <a href="{% url 'residentes:residencia_editar' residencia.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+        <form method="post" action="{% url 'residentes:residencia_eliminar' residencia.pk %}" class="d-inline"
+              onsubmit="return confirm('¿Eliminar esta residencia? Esta acción no se puede deshacer.');">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6" class="text-center text-muted">No hay residencias registradas.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if residencias.paginator.num_pages > 1 %}
+<nav>
+  <ul class="pagination justify-content-center">
+    {% if residencias.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ residencias.previous_page_number }}">« Anterior</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">« Anterior</span></li>
+    {% endif %}
+    <li class="page-item active"><span class="page-link">Página {{ residencias.number }} de {{ residencias.paginator.num_pages }}</span></li>
+    {% if residencias.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ residencias.next_page_number }}">Siguiente »</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Siguiente »</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}
