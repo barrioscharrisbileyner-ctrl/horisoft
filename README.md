@@ -215,3 +215,37 @@ curl -i http://localhost:3000/usuarios
 curl http://localhost:3000/usuarios -H "Authorization: Bearer <token_obtenido_en_login>"
 ```
 
+## 9. Zonas Comunes y Reservas — protegidas con JWT
+
+Siguiendo el mismo `authMiddleware.js`, las operaciones de escritura de estos
+dos módulos ahora exigen un Token JWT válido; la lectura permanece pública:
+
+| Método y ruta | Protegida | Motivo |
+|---|---|---|
+| GET /zonas-comunes, GET /zonas-comunes/:id | No | Consultar disponibilidad es público |
+| POST/PUT/DELETE /zonas-comunes/... | Sí | Gestión administrativa |
+| GET /reservas, GET /reservas/:id | No | Consultar reservas es público |
+| POST/PUT/DELETE /reservas/... | Sí | Un residente debe estar autenticado para reservar |
+
+```bash
+node pruebas-jwt-modulos.js
+```
+
+Resultado esperado: 7 pruebas correctas, 0 fallidas (CP-MOD-01 a CP-MOD-07).
+
+## 10. Control de versiones
+
+Este proyecto se entrega versionado con Git (no como un .zip suelto). El
+historial de commits documenta la construcción por etapas: estructura base →
+modelos y datos → controladores/servicios → rutas → módulo de autenticación →
+middleware y protección de Usuarios → pruebas → protección de Zonas Comunes
+y Reservas.
+
+Para conectarlo a un repositorio remoto en GitHub:
+
+```bash
+git remote add origin https://github.com/<tu-usuario>/<tu-repo>.git
+git push -u origin main
+```
+
+
