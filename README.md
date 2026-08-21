@@ -233,7 +233,24 @@ node pruebas-jwt-modulos.js
 
 Resultado esperado: 7 pruebas correctas, 0 fallidas (CP-MOD-01 a CP-MOD-07).
 
-## 10. Control de versiones
+## 11. PQR — protegido con JWT
+
+Mismo criterio: lectura pública, escritura protegida.
+
+| Método y ruta | Protegida | Motivo |
+|---|---|---|
+| GET /pqr, GET /pqr/:id | No | Consultar PQR es público |
+| POST /pqr | Sí | El residente debe estar autenticado para reportar |
+| PUT /pqr/:id/respuesta, PUT /pqr/:id/estado | Sí | Acción administrativa |
+| DELETE /pqr/:id | Sí | Acción administrativa |
+
+```bash
+node pruebas-jwt-pqr.js
+```
+
+Resultado esperado: 6 pruebas correctas, 0 fallidas (CP-PQR-01 a CP-PQR-06).
+
+## 12. Control de versiones
 
 Este proyecto se entrega versionado con Git (no como un .zip suelto). El
 historial de commits documenta la construcción por etapas: estructura base →
