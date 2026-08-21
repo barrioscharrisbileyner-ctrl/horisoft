@@ -2,17 +2,18 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/vigilantes.controller");
+const verificarToken = require("../middlewares/authMiddleware");
 
-// GET    /vigilantes            -> listar todos
-// GET    /vigilantes/:id        -> obtener uno específico
-// POST   /vigilantes            -> crear un vigilante
-// PUT    /vigilantes/:id/estado -> actualizar estado (Activo/Inactivo)
-// DELETE /vigilantes/:id        -> eliminar un vigilante
+// GET    /vigilantes            -> listar todos (público)
+// GET    /vigilantes/:id        -> obtener uno específico (público)
+// POST   /vigilantes            -> crear un vigilante (protegido)
+// PUT    /vigilantes/:id/estado -> actualizar estado (protegido)
+// DELETE /vigilantes/:id        -> eliminar un vigilante (protegido)
 
 router.get("/", controller.listar);
 router.get("/:id", controller.obtener);
-router.post("/", controller.crear);
-router.put("/:id/estado", controller.actualizarEstado);
-router.delete("/:id", controller.eliminar);
+router.post("/", verificarToken, controller.crear);
+router.put("/:id/estado", verificarToken, controller.actualizarEstado);
+router.delete("/:id", verificarToken, controller.eliminar);
 
 module.exports = router;
