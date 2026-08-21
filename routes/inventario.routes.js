@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/inventario.controller");
+const verificarToken = require("../middlewares/authMiddleware");
 
 router.get("/", controller.listar);
 router.get("/:id", controller.obtener);
-router.post("/", controller.crear);
-router.put("/:id/cantidad", controller.actualizarCantidad);
-router.put("/:id/estado", controller.actualizarEstado);
-router.delete("/:id", controller.eliminar);
+router.post("/", verificarToken, controller.crear);
+router.put("/:id/cantidad", verificarToken, controller.actualizarCantidad);
+router.put("/:id/estado", verificarToken, controller.actualizarEstado);
+router.delete("/:id", verificarToken, controller.eliminar);
 
 module.exports = router;
