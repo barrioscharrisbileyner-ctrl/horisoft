@@ -233,7 +233,60 @@ node pruebas-jwt-modulos.js
 
 Resultado esperado: 7 pruebas correctas, 0 fallidas (CP-MOD-01 a CP-MOD-07).
 
-## 10. Control de versiones
+## 11. PQR — protegido con JWT
+
+Mismo criterio: lectura pública, escritura protegida.
+
+| Método y ruta | Protegida | Motivo |
+|---|---|---|
+| GET /pqr, GET /pqr/:id | No | Consultar PQR es público |
+| POST /pqr | Sí | El residente debe estar autenticado para reportar |
+| PUT /pqr/:id/respuesta, PUT /pqr/:id/estado | Sí | Acción administrativa |
+| DELETE /pqr/:id | Sí | Acción administrativa |
+
+```bash
+node pruebas-jwt-pqr.js
+```
+
+Resultado esperado: 6 pruebas correctas, 0 fallidas (CP-PQR-01 a CP-PQR-06).
+
+## 12. Los 9 módulos restantes — protegidos con JWT
+
+Con esta iteración, **los 14 módulos de Horisoft quedan con el mismo criterio de
+seguridad aplicado de forma consistente**: lectura (GET) pública, escritura
+(POST/PUT/DELETE) protegida con Token JWT.
+
+| Módulo | Rutas protegidas |
+|---|---|
+| Financiera — Cuentas de Cobro | POST, PUT /:id/vencida, DELETE |
+| Financiera — Pagos | POST |
+| Comunicaciones | POST, PUT /:id/archivar, DELETE |
+| Gestión Documental | POST, DELETE |
+| Seguridad — Vigilantes | POST, PUT /:id/estado, DELETE |
+| Seguridad — Visitantes | POST, PUT /:id/salida, DELETE |
+| Seguridad — Vehículos | POST, PUT /:id/estado, DELETE |
+| Inventario | POST, PUT /:id/cantidad, PUT /:id/estado, DELETE |
+| Proveedores | POST, PUT /:id/estado, DELETE |
+| Configuración | POST, PUT /:clave, DELETE |
+
+```bash
+node pruebas-jwt-resto.js
+```
+
+Resultado esperado: 29 pruebas correctas, 0 fallidas.
+
+### Resumen de todas las pruebas del proyecto
+
+| Archivo | Casos | Cubre |
+|---|---|---|
+| pruebas-jwt.js | 11 | Autenticación + Usuarios |
+| pruebas-jwt-modulos.js | 7 | Zonas Comunes + Reservas |
+| pruebas-jwt-pqr.js | 6 | PQR |
+| pruebas-jwt-resto.js | 29 | Financiera, Comunicaciones, Documentos, Seguridad, Inventario, Proveedores, Configuración |
+| pruebas-manuales.js | 33 | Reglas de negocio de los 14 módulos (sin JWT) |
+| **Total JWT** | **53** | **Los 14 módulos, con acceso público de lectura y escritura protegida** |
+
+## 13. Control de versiones
 
 Este proyecto se entrega versionado con Git (no como un .zip suelto). El
 historial de commits documenta la construcción por etapas: estructura base →

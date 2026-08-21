@@ -65,7 +65,7 @@ async function ejecutarPruebas() {
         const payloadReserva = {
             id_zona: 2,
             id_residencia: 1,
-            fecha: "2026-08-20",
+            fecha: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0], // 7 días adelante, siempre futura
             hora_inicio: "10:00",
             hora_fin: "11:00",
         };
