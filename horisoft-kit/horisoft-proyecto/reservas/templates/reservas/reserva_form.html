@@ -1,0 +1,28 @@
+{% extends 'residentes/base.html' %}
+{% block titulo %}{{ titulo }}{% endblock %}
+{% block contenido %}
+<h2>{{ titulo }}</h2>
+{% if sin_residencia %}
+<div class="alert alert-warning">
+  No tienes una residencia activa asociada a tu usuario, por eso no puedes reservar.
+  Comunícate con la administración para que registren tu residencia.
+</div>
+{% endif %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+  {% endif %}
+  {% for campo in form %}
+  <div class="mb-3">
+    <label class="form-label">{{ campo.label }}</label>
+    {{ campo }}
+    {% if campo.errors %}
+      <div class="text-danger small">{{ campo.errors|striptags }}</div>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-success" {% if sin_residencia %}disabled{% endif %}>Guardar</button>
+  <a href="{% url 'reservas:lista' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

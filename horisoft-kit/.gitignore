@@ -1,0 +1,10 @@
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.env
+*.sqlite3
+app-movil/.gradle/
+app-movil/**/build/
+app-movil/local.properties

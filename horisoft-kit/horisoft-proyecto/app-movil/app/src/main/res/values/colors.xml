@@ -1,0 +1,13 @@
+<resources>
+    <color name="horisoft_azul_oscuro">#1E293B</color>
+    <color name="horisoft_azul">#3B82F6</color>
+    <color name="horisoft_azul_hover">#2563EB</color>
+    <color name="horisoft_fondo">#F8FAFC</color>
+    <color name="horisoft_texto">#1F2937</color>
+    <color name="horisoft_texto_suave">#64748B</color>
+    <color name="horisoft_borde">#E2E8F0</color>
+    <color name="horisoft_error">#B91C1C</color>
+    <color name="horisoft_ok">#15803D</color>
+    <color name="horisoft_aviso">#B45309</color>
+    <color name="blanco">#FFFFFF</color>
+</resources>

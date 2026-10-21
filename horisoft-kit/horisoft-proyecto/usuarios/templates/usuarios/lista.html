@@ -1,0 +1,51 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Usuarios{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 m-0">Usuarios del sistema</h1>
+  <a class="btn btn-horisoft" href="{% url 'usuarios:crear' %}">Nuevo usuario</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-5">
+    <input class="form-control" name="q" value="{{ q }}" placeholder="Buscar por nombre o correo">
+  </div>
+  <div class="col-md-3">
+    <select class="form-select" name="rol">
+      <option value="">Todos los roles</option>
+      {% for valor, etiqueta in roles %}
+      <option value="{{ valor }}" {% if valor == rol_filtro %}selected{% endif %}>{{ etiqueta }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2"><button class="btn btn-outline-secondary w-100" type="submit">Filtrar</button></div>
+</form>
+
+<div class="table-responsive">
+<table class="table table-hover bg-white align-middle">
+  <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Persona</th><th>Estado</th><th></th></tr></thead>
+  <tbody>
+  {% for perfil in pagina %}
+    <tr>
+      <td>{{ perfil.user.get_full_name|default:"—" }}</td>
+      <td>{{ perfil.user.email }}</td>
+      <td>{{ perfil.rol }}</td>
+      <td>{{ perfil.persona|default:"—" }}</td>
+      <td>{% if perfil.user.is_active %}<span class="badge text-bg-success">Activo</span>{% else %}<span class="badge text-bg-secondary">Inactivo</span>{% endif %}</td>
+      <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{% url 'usuarios:editar' perfil.pk %}">Editar</a></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6" class="text-center text-muted py-4">No hay usuarios que coincidan.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% if pagina.has_other_pages %}
+<nav><ul class="pagination">
+  {% if pagina.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ pagina.previous_page_number }}&q={{ q }}&rol={{ rol_filtro }}">Anterior</a></li>{% endif %}
+  <li class="page-item disabled"><span class="page-link">Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span></li>
+  {% if pagina.has_next %}<li class="page-item"><a class="page-link" href="?page={{ pagina.next_page_number }}&q={{ q }}&rol={{ rol_filtro }}">Siguiente</a></li>{% endif %}
+</ul></nav>
+{% endif %}
+{% endblock %}

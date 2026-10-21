@@ -1,0 +1,36 @@
+{% extends 'residentes/base.html' %}
+{% block titulo %}{{ titulo }}{% endblock %}
+{% block contenido %}
+<h2>{{ titulo }}</h2>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+  {% endif %}
+  {% for campo in form %}
+  <div class="mb-3 {% if campo.name == 'activo' %}form-check{% endif %}">
+    {% if campo.name == 'activo' %}
+      {{ campo }}
+      <label class="form-check-label">{{ campo.label }}</label>
+    {% else %}
+      <label class="form-label">{{ campo.label }}</label>
+      {{ campo }}
+    {% endif %}
+    {% if campo.errors %}
+      <div class="text-danger small">{{ campo.errors|striptags }}</div>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-success">Guardar</button>
+  <a href="{% url 'residentes:residencias' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+
+{% if not form.instance.pk %}
+<div class="alert alert-info mt-4">
+  <i class="fa-solid fa-circle-info"></i>
+  ¿El residente o la unidad todavía no existen?
+  <a href="{% url 'residentes:persona_crear' %}">Crea el residente aquí</a> o
+  <a href="{% url 'residentes:unidad_crear' %}">crea la unidad aquí</a> y luego vuelve a esta pantalla.
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}{{ titulo }}{% endblock %}
+{% block contenido %}
+<div class="row justify-content-center"><div class="col-md-7 col-lg-6">
+  <h1 class="h4 mb-3">{{ titulo }}</h1>
+  <form method="post" novalidate class="card card-body shadow-sm">
+    {% csrf_token %}
+    {% for campo in form %}
+    <div class="mb-3 {% if campo.name == 'is_active' %}form-check{% endif %}">
+      {% if campo.name == 'is_active' %}
+        {{ campo }} <label class="form-check-label" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+      {% else %}
+        <label class="form-label" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+        {{ campo }}
+      {% endif %}
+      {% if campo.help_text %}<div class="form-text">{{ campo.help_text }}</div>{% endif %}
+      {% for error in campo.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+    </div>
+    {% endfor %}
+    <div class="d-flex gap-2">
+      <button class="btn btn-horisoft" type="submit">Guardar</button>
+      <a class="btn btn-outline-secondary" href="{% url 'usuarios:lista' %}">Cancelar</a>
+    </div>
+  </form>
+</div></div>
+{% endblock %}

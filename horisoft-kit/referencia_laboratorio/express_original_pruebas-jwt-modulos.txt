@@ -1,0 +1,11 @@
+◇ injected env (3) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+✅ CP-MOD-01: GET /zonas-comunes sin token responde 200 (lectura pública)
+✅ CP-MOD-02: POST /zonas-comunes sin token responde 401
+✅ CP-MOD-03: POST /zonas-comunes con token válido responde 201
+✅ CP-MOD-04: GET /reservas sin token responde 200 (lectura pública)
+✅ CP-MOD-05: POST /reservas sin token responde 401
+✅ CP-MOD-06: POST /reservas con token válido responde 201
+✅ CP-MOD-07: POST /reservas con token inválido responde 403
+
+--------------------------------------------------
+Resultado: 7 pruebas correctas, 0 fallidas.

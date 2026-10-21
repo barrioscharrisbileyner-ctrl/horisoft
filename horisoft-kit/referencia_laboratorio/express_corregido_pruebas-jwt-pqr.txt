@@ -1,0 +1,10 @@
+◇ injected env (3) from .env // tip: ⌘ override existing { override: true }
+✅ CP-PQR-01: GET /pqr sin token responde 200 (lectura pública)
+✅ CP-PQR-02: POST /pqr sin token responde 401
+✅ CP-PQR-03: POST /pqr con token válido responde 201
+✅ CP-PQR-04: PUT /pqr/:id/respuesta sin token responde 401
+✅ CP-PQR-05: PUT /pqr/:id/respuesta con token válido responde 200
+✅ CP-PQR-06: DELETE /pqr/:id con token inválido responde 403
+
+--------------------------------------------------
+Resultado: 6 pruebas correctas, 0 fallidas.

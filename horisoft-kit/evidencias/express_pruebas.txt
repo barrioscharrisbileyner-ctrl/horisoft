@@ -1,0 +1,534 @@
+Horisoft - Pruebas de Express
+Fecha: mar. 20/10/2026 19:23:12,67
+
+===== pruebas-jwt.js =====
+◇ injected env (3) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+✅ CP-JWT-01: login correcto responde 200
+✅ CP-JWT-01: la respuesta incluye un token
+✅ CP-JWT-02: login con password incorrecto responde 401
+✅ CP-JWT-03: /usuarios sin token responde 401
+✅ CP-JWT-04: /usuarios con token inválido responde 403
+✅ CP-JWT-05: /usuarios con token válido responde 200
+✅ CP-JWT-05: /usuarios devuelve la lista de usuarios
+✅ CP-JWT-05: el password nunca se expone
+✅ CP-JWT-06: /auth/perfil responde 200 con token válido
+✅ CP-JWT-06: el payload decodificado incluye el rol
+✅ CP-JWT-07: token sin el prefijo 'Bearer' responde 401
+
+--------------------------------------------------
+Resultado: 11 pruebas correctas, 0 fallidas.
+===== pruebas-jwt-modulos.js =====
+◇ injected env (3) from .env // tip: ⌘ enable debugging { debug: true }
+✅ CP-MOD-01: GET /zonas-comunes sin token responde 200 (lectura pública)
+✅ CP-MOD-02: POST /zonas-comunes sin token responde 401
+✅ CP-MOD-03: POST /zonas-comunes con token válido responde 201
+✅ CP-MOD-04: GET /reservas sin token responde 200 (lectura pública)
+✅ CP-MOD-05: POST /reservas sin token responde 401
+✅ CP-MOD-06: POST /reservas con token válido responde 201
+✅ CP-MOD-07: POST /reservas con token inválido responde 403
+
+--------------------------------------------------
+Resultado: 7 pruebas correctas, 0 fallidas.
+===== pruebas-jwt-pqr.js =====
+◇ injected env (3) from .env // tip: ⌘ enable debugging { debug: true }
+✅ CP-PQR-01: GET /pqr sin token responde 200 (lectura pública)
+✅ CP-PQR-02: POST /pqr sin token responde 401
+✅ CP-PQR-03: POST /pqr con token válido responde 201
+✅ CP-PQR-04: PUT /pqr/:id/respuesta sin token responde 401
+✅ CP-PQR-05: PUT /pqr/:id/respuesta con token válido responde 200
+✅ CP-PQR-06: DELETE /pqr/:id con token inválido responde 403
+
+--------------------------------------------------
+Resultado: 6 pruebas correctas, 0 fallidas.
+===== pruebas-jwt-resto.js =====
+◇ injected env (3) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+✅ CP-FIN-01: GET /cuentas-cobro sin token responde 200
+✅ CP-FIN-02: POST /cuentas-cobro sin token responde 401
+✅ CP-FIN-03: POST /cuentas-cobro con token válido responde 201
+✅ CP-FIN-04: POST /pagos sin token responde 401
+✅ CP-FIN-05: POST /pagos con token válido responde 201
+✅ CP-COM-01: POST /comunicados sin token responde 401
+✅ CP-COM-02: POST /comunicados con token válido responde 201
+✅ CP-DOC-01: POST /documentos sin token responde 401
+✅ CP-DOC-02: POST /documentos con token válido responde 201
+✅ CP-SEG-01: POST /vigilantes sin token responde 401
+✅ CP-SEG-02: POST /vigilantes con token válido responde 201
+✅ CP-SEG-03: POST /visitantes sin token responde 401
+✅ CP-SEG-04: POST /visitantes con token válido responde 201
+✅ CP-SEG-05: POST /vehiculos sin token responde 401
+✅ CP-SEG-06: POST /vehiculos con token válido responde 201
+✅ CP-INV-01: POST /inventario sin token responde 401
+✅ CP-INV-02: POST /inventario con token válido responde 201
+✅ CP-PROV-01: POST /proveedores sin token responde 401
+✅ CP-PROV-02: POST /proveedores con token válido responde 201
+✅ CP-CFG-01: POST /configuracion sin token responde 401
+✅ CP-CFG-02: POST /configuracion con token válido responde 201
+✅ CP-LEC-/comunicados: GET /comunicados sin token responde 200 (lectura pública)
+✅ CP-LEC-/documentos: GET /documentos sin token responde 200 (lectura pública)
+✅ CP-LEC-/vigilantes: GET /vigilantes sin token responde 200 (lectura pública)
+✅ CP-LEC-/visitantes: GET /visitantes sin token responde 200 (lectura pública)
+✅ CP-LEC-/vehiculos: GET /vehiculos sin token responde 200 (lectura pública)
+✅ CP-LEC-/inventario: GET /inventario sin token responde 200 (lectura pública)
+✅ CP-LEC-/proveedores: GET /proveedores sin token responde 200 (lectura pública)
+✅ CP-LEC-/configuracion: GET /configuracion sin token responde 200 (lectura pública)
+
+--------------------------------------------------
+Resultado: 29 pruebas correctas, 0 fallidas.
+===== pruebas-jwt-residencia.js =====
+◇ injected env (3) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+✅ CP-RES-01: login del Residente devuelve id_residencia = 1
+✅ CP-RES-02: login del Administrador devuelve id_residencia = null
+✅ CP-RES-03: el token del Residente incluye id_residencia = 1
+✅ CP-RES-04: Residente crea reserva (201)
+✅ CP-RES-05: la reserva queda a nombre de SU residencia (1), no la del body (99)
+✅ CP-RES-06: Administrador sin id_residencia en el body recibe 400
+✅ CP-RES-07: Administrador con id_residencia en el body crea la reserva (201)
+
+Resultado: 7 correctas, 0 fallidas.
+===== pruebas-manuales.js =====
+◇ injected env (3) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+
+========== MODULO: ZONAS COMUNES ==========
+✅ [200] GET /zonas-comunes
+[
+  {
+    "id_zona": 1,
+    "nombre": "Salón Social",
+    "descripcion": "Salón para eventos y reuniones",
+    "capacidad": 50,
+    "costo_reserva": 80000,
+    "estado": "Disponible"
+  },
+  {
+    "id_zona": 2,
+    "nombre": "Piscina",
+    "descripcion": "Piscina para adultos y niños",
+    "capacidad": 30,
+    "costo_reserva": 0,
+    "estado": "Disponible"
+  },
+  {
+    "id_zona": 3,
+    "nombre": "Cancha Múltiple",
+    "descripcion": "Cancha de fútbol/baloncesto",
+    "capacidad": 20,
+    "costo_reserva": 30000,
+    "estado": "Mantenimiento"
+  }
+]
+
+✅ [201] POST /zonas-comunes (crear cancha de tenis)
+{
+  "mensaje": "Zona común creada correctamente",
+  "zona": {
+    "id_zona": 4,
+    "nombre": "Cancha de Tenis",
+    "descripcion": "Cancha techada",
+    "capacidad": 4,
+    "costo_reserva": 20000,
+    "estado": "Disponible"
+  }
+}
+
+❌ [400] POST /zonas-comunes (falta capacidad -> error)
+{
+  "mensaje": "nombre y capacidad son obligatorios"
+}
+
+
+========== MODULO: RESERVAS ==========
+✅ [201] POST /reservas (reserva valida)
+{
+  "mensaje": "Reserva creada correctamente",
+  "reserva": {
+    "id_reserva": 1,
+    "id_zona": 1,
+    "id_residencia": 101,
+    "fecha": "2026-10-27",
+    "hora_inicio": "10:00",
+    "hora_fin": "12:00",
+    "observaciones": "Prueba",
+    "estado": "Pendiente"
+  }
+}
+
+❌ [400] POST /reservas (cruce de horario -> error)
+{
+  "mensaje": "Ya existe una reserva activa para esa zona en ese horario"
+}
+
+✅ [200] PUT /reservas/1/estado (Confirmada)
+{
+  "id_reserva": 1,
+  "id_zona": 1,
+  "id_residencia": 101,
+  "fecha": "2026-10-27",
+  "hora_inicio": "10:00",
+  "hora_fin": "12:00",
+  "observaciones": "Prueba",
+  "estado": "Confirmada"
+}
+
+✅ [200] DELETE /reservas/1
+{
+  "mensaje": "Reserva eliminada"
+}
+
+
+========== MODULO: VIGILANTES ==========
+✅ [200] GET /vigilantes
+[
+  {
+    "id_vigilante": 1,
+    "nombre": "Carlos Ramírez",
+    "documento": "1094567890",
+    "telefono": "3001234567",
+    "turno": "Diurno",
+    "estado": "Activo"
+  },
+  {
+    "id_vigilante": 2,
+    "nombre": "Luis Torres",
+    "documento": "1098765432",
+    "telefono": "3007654321",
+    "turno": "Nocturno",
+    "estado": "Inactivo"
+  }
+]
+
+✅ [201] POST /vigilantes (nuevo vigilante)
+{
+  "mensaje": "Vigilante creado correctamente",
+  "vigilante": {
+    "id_vigilante": 3,
+    "nombre": "Marta Lopez",
+    "documento": "1099887766",
+    "telefono": "3005556677",
+    "turno": "Mixto",
+    "estado": "Activo"
+  }
+}
+
+
+========== MODULO: VISITANTES ==========
+✅ [201] POST /visitantes (ingreso valido)
+{
+  "mensaje": "Ingreso registrado correctamente",
+  "visita": {
+    "id_visita": 1,
+    "nombre": "Pedro Gomez",
+    "documento": "555666777",
+    "id_residencia": 105,
+    "id_vigilante": 1,
+    "motivo": "Entrega domicilio",
+    "placa_vehiculo": null,
+    "fecha": "2026-10-21",
+    "hora_ingreso": "2026-10-21T00:23:16.961Z",
+    "hora_salida": null,
+    "estado": "En instalación"
+  }
+}
+
+❌ [400] POST /visitantes (mismo documento sin salida -> error)
+{
+  "mensaje": "Este visitante ya tiene un ingreso activo sin salida registrada"
+}
+
+✅ [200] PUT /visitantes/1/salida
+{
+  "mensaje": "Salida registrada correctamente",
+  "visita": {
+    "id_visita": 1,
+    "nombre": "Pedro Gomez",
+    "documento": "555666777",
+    "id_residencia": 105,
+    "id_vigilante": 1,
+    "motivo": "Entrega domicilio",
+    "placa_vehiculo": null,
+    "fecha": "2026-10-21",
+    "hora_ingreso": "2026-10-21T00:23:16.961Z",
+    "hora_salida": "2026-10-21T00:23:16.962Z",
+    "estado": "Finalizada"
+  }
+}
+
+
+========== MODULO: AUTENTICACION ==========
+✅ [201] POST /auth/registro
+{
+  "mensaje": "Usuario registrado correctamente",
+  "usuario": {
+    "id_usuario": 4,
+    "nombre": "Laura Martinez",
+    "correo": "laura@horisoft.com",
+    "rol": "Residente",
+    "estado": "Activo",
+    "id_residencia": null
+  }
+}
+
+✅ [200] POST /auth/login (correcto)
+{
+  "mensaje": "¡Autenticación exitosa!",
+  "usuario": {
+    "id_usuario": 4,
+    "nombre": "Laura Martinez",
+    "correo": "laura@horisoft.com",
+    "rol": "Residente",
+    "estado": "Activo",
+    "id_residencia": null
+  },
+  "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjo0LCJjb3JyZW8iOiJsYXVyYUBob3Jpc29mdC5jb20iLCJyb2wiOiJSZXNpZGVudGUiLCJpZF9yZXNpZGVuY2lhIjpudWxsLCJpYXQiOjE3OTI1NDIxOTYsImV4cCI6MTc5MjU0NTc5Nn0.scl_BY2oicB12K0dJm3rfOwFv7AIN8WSBr3qk84bbXk"
+}
+
+❌ [401] POST /auth/login (password incorrecto -> error)
+{
+  "mensaje": "Credenciales inválidas"
+}
+
+
+========== MODULO: PQR ==========
+✅ [201] POST /pqr (crear queja)
+{
+  "mensaje": "PQR registrada correctamente",
+  "pqr": {
+    "id_pqr": 1,
+    "id_residencia": 103,
+    "tipo": "Queja",
+    "asunto": "Mascota suelta",
+    "descripcion": "Perro sin correa en zona comun",
+    "respuesta": null,
+    "fecha_creacion": "2026-10-21T00:23:16.966Z",
+    "estado": "Abierta"
+  }
+}
+
+✅ [200] PUT /pqr/1/respuesta
+{
+  "mensaje": "Respuesta registrada, PQR cerrada",
+  "pqr": {
+    "id_pqr": 1,
+    "id_residencia": 103,
+    "tipo": "Queja",
+    "asunto": "Mascota suelta",
+    "descripcion": "Perro sin correa en zona comun",
+    "respuesta": "Se envio circular recordando el reglamento de mascotas",
+    "fecha_creacion": "2026-10-21T00:23:16.966Z",
+    "estado": "Cerrada"
+  }
+}
+
+❌ [400] PUT /pqr/1/respuesta (ya cerrada -> error)
+{
+  "mensaje": "No se puede responder una PQR que ya está cerrada"
+}
+
+
+========== MODULO: COMUNICACIONES ==========
+✅ [201] POST /comunicados
+{
+  "mensaje": "Comunicado publicado correctamente",
+  "comunicado": {
+    "id_comunicado": 2,
+    "titulo": "Asamblea general",
+    "contenido": "Se cita a asamblea el 30 de agosto",
+    "dirigido_a": "Residentes",
+    "id_autor": 1,
+    "fecha_publicacion": "2026-10-21T00:23:16.967Z",
+    "estado": "Publicado"
+  }
+}
+
+✅ [200] PUT /comunicados/2/archivar
+{
+  "id_comunicado": 2,
+  "titulo": "Asamblea general",
+  "contenido": "Se cita a asamblea el 30 de agosto",
+  "dirigido_a": "Residentes",
+  "id_autor": 1,
+  "fecha_publicacion": "2026-10-21T00:23:16.967Z",
+  "estado": "Archivado"
+}
+
+
+========== MODULO: FINANCIERA ==========
+✅ [200] GET /cuentas-cobro
+[
+  {
+    "id_cuenta": 1,
+    "id_residencia": 101,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 0,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pendiente"
+  },
+  {
+    "id_cuenta": 2,
+    "id_residencia": 102,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 0,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pendiente"
+  }
+]
+
+✅ [201] POST /pagos (pago parcial)
+{
+  "mensaje": "Pago registrado correctamente",
+  "pago": {
+    "id_pago": 1,
+    "id_cuenta": 2,
+    "valor_pagado": 100000,
+    "metodo_pago": "Transferencia",
+    "fecha_pago": "2026-10-21T00:23:16.968Z"
+  },
+  "cuenta": {
+    "id_cuenta": 2,
+    "id_residencia": 102,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 100000,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pendiente"
+  }
+}
+
+❌ [400] POST /pagos (excede saldo -> error)
+{
+  "mensaje": "El valor pagado ($100000) excede el saldo pendiente ($50000)"
+}
+
+✅ [201] POST /pagos (completa el saldo)
+{
+  "mensaje": "Pago registrado correctamente",
+  "pago": {
+    "id_pago": 2,
+    "id_cuenta": 2,
+    "valor_pagado": 50000,
+    "metodo_pago": "Efectivo",
+    "fecha_pago": "2026-10-21T00:23:16.968Z"
+  },
+  "cuenta": {
+    "id_cuenta": 2,
+    "id_residencia": 102,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 150000,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pagada"
+  }
+}
+
+
+========== MODULO: PROVEEDORES ==========
+✅ [201] POST /proveedores
+{
+  "mensaje": "Proveedor creado correctamente",
+  "proveedor": {
+    "id_proveedor": 2,
+    "nombre": "Seguridad Total SAS",
+    "nit": "900555444-2",
+    "servicio": "Vigilancia",
+    "telefono": "3201112233",
+    "estado": "Activo"
+  }
+}
+
+✅ [200] DELETE /proveedores/1
+{
+  "mensaje": "Proveedor eliminado"
+}
+
+
+========== MODULO: INVENTARIO ==========
+✅ [201] POST /inventario
+{
+  "mensaje": "Ítem registrado correctamente",
+  "item": {
+    "id_item": 3,
+    "nombre": "Extintores",
+    "categoria": "Seguridad",
+    "cantidad": 10,
+    "ubicacion": "Pasillos",
+    "estado": "Bueno"
+  }
+}
+
+✅ [200] PUT /inventario/1/cantidad
+{
+  "id_item": 1,
+  "nombre": "Sillas plásticas",
+  "categoria": "Mobiliario",
+  "cantidad": 48,
+  "ubicacion": "Depósito Salón Social",
+  "estado": "Bueno"
+}
+
+
+========== MODULO: VEHICULOS ==========
+✅ [201] POST /vehiculos
+{
+  "mensaje": "Vehículo registrado correctamente",
+  "vehiculo": {
+    "id_vehiculo": 2,
+    "placa": "JKL456",
+    "id_residencia": 104,
+    "tipo": "Moto",
+    "color": "Rojo",
+    "estado": "Activo"
+  }
+}
+
+❌ [400] POST /vehiculos (placa duplicada -> error)
+{
+  "mensaje": "Ya existe un vehículo registrado con esa placa"
+}
+
+
+========== MODULO: DOCUMENTOS ==========
+✅ [201] POST /documentos
+{
+  "mensaje": "Documento registrado correctamente",
+  "documento": {
+    "id_documento": 1,
+    "titulo": "Acta Asamblea 2026",
+    "tipo": "Acta",
+    "id_responsable": 1,
+    "url_archivo": "/docs/acta2026.pdf",
+    "fecha_subida": "2026-10-21T00:23:16.969Z"
+  }
+}
+
+
+========== MODULO: CONFIGURACION ==========
+✅ [200] PUT /configuracion/dia_pago_cuota
+{
+  "clave": "dia_pago_cuota",
+  "valor": "10",
+  "descripcion": "Día límite de pago mensual de la cuota de administración"
+}
+
+✅ [200] GET /configuracion
+[
+  {
+    "clave": "nombre_conjunto",
+    "valor": "Conjunto Residencial Los Álamos",
+    "descripcion": "Nombre del conjunto"
+  },
+  {
+    "clave": "dia_pago_cuota",
+    "valor": "10",
+    "descripcion": "Día límite de pago mensual de la cuota de administración"
+  },
+  {
+    "clave": "porcentaje_mora",
+    "valor": "1.5",
+    "descripcion": "Porcentaje de interés de mora mensual"
+  }
+]
+
+========== FIN DE LAS PRUEBAS ==========
+
+[ OK ] Las seis suites finalizaron correctamente.

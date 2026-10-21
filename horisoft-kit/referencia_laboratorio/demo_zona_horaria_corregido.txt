@@ -1,0 +1,4 @@
+# demo_inc01_zona_horaria.js — backend corregido — ejecutado con TZ=America/Bogota
+Hora UTC:        2026-10-19T02:47:55.777Z
+Hoy en Colombia: 2026-10-18   |   Hoy en UTC (lo que usaba el servidor): 2026-10-19
+✅ RESERVA ACEPTADA (id 1) para 2026-10-18

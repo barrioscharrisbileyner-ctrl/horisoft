@@ -1,0 +1,10 @@
+◇ injected env (3) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+✅ CP-RES-01: login del Residente devuelve id_residencia = 1
+✅ CP-RES-02: login del Administrador devuelve id_residencia = null
+✅ CP-RES-03: el token del Residente incluye id_residencia = 1
+✅ CP-RES-04: Residente crea reserva (201)
+✅ CP-RES-05: la reserva queda a nombre de SU residencia (1), no la del body (99)
+✅ CP-RES-06: Administrador sin id_residencia en el body recibe 400
+✅ CP-RES-07: Administrador con id_residencia en el body crea la reserva (201)
+
+Resultado: 7 correctas, 0 fallidas.

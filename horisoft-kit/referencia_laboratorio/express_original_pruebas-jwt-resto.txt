@@ -1,0 +1,33 @@
+◇ injected env (3) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+✅ CP-FIN-01: GET /cuentas-cobro sin token responde 200
+✅ CP-FIN-02: POST /cuentas-cobro sin token responde 401
+✅ CP-FIN-03: POST /cuentas-cobro con token válido responde 201
+✅ CP-FIN-04: POST /pagos sin token responde 401
+✅ CP-FIN-05: POST /pagos con token válido responde 201
+✅ CP-COM-01: POST /comunicados sin token responde 401
+✅ CP-COM-02: POST /comunicados con token válido responde 201
+✅ CP-DOC-01: POST /documentos sin token responde 401
+✅ CP-DOC-02: POST /documentos con token válido responde 201
+✅ CP-SEG-01: POST /vigilantes sin token responde 401
+✅ CP-SEG-02: POST /vigilantes con token válido responde 201
+✅ CP-SEG-03: POST /visitantes sin token responde 401
+✅ CP-SEG-04: POST /visitantes con token válido responde 201
+✅ CP-SEG-05: POST /vehiculos sin token responde 401
+✅ CP-SEG-06: POST /vehiculos con token válido responde 201
+✅ CP-INV-01: POST /inventario sin token responde 401
+✅ CP-INV-02: POST /inventario con token válido responde 201
+✅ CP-PROV-01: POST /proveedores sin token responde 401
+✅ CP-PROV-02: POST /proveedores con token válido responde 201
+✅ CP-CFG-01: POST /configuracion sin token responde 401
+✅ CP-CFG-02: POST /configuracion con token válido responde 201
+✅ CP-LEC-/comunicados: GET /comunicados sin token responde 200 (lectura pública)
+✅ CP-LEC-/documentos: GET /documentos sin token responde 200 (lectura pública)
+✅ CP-LEC-/vigilantes: GET /vigilantes sin token responde 200 (lectura pública)
+✅ CP-LEC-/visitantes: GET /visitantes sin token responde 200 (lectura pública)
+✅ CP-LEC-/vehiculos: GET /vehiculos sin token responde 200 (lectura pública)
+✅ CP-LEC-/inventario: GET /inventario sin token responde 200 (lectura pública)
+✅ CP-LEC-/proveedores: GET /proveedores sin token responde 200 (lectura pública)
+✅ CP-LEC-/configuracion: GET /configuracion sin token responde 200 (lectura pública)
+
+--------------------------------------------------
+Resultado: 29 pruebas correctas, 0 fallidas.

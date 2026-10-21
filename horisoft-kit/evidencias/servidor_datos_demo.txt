@@ -1,0 +1,111 @@
+﻿Horisoft - Servidor con datos de demostracion
+Fecha: mar. 20/10/2026 19:30:47,58
+
+===== Migraciones =====
+
+===== Carga de datos de demostracion =====
+Datos de demostración listos.
+
+Usuarios (contraseña de todos: [REDACTED])
+  Administrador   admin@horisoft.com
+  Administrativo  administrativo@horisoft.com
+  Vigilante       vigilante@horisoft.com
+  Residente       ana@horisoft.com
+  Residente       luis@horisoft.com
+
+Se crearon 12 residentes de relleno (documentos 900 a 911).
+
+
+===== Inicio del servidor Django (Ctrl+C para detener) =====
+Watching for file changes with StatReloader
+[20/Oct/2026 19:30:55] "GET / HTTP/1.1" 302 0
+[20/Oct/2026 19:30:55] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:30:55] "GET /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2683
+[20/Oct/2026 19:30:55,731] - Broken pipe from ('127.0.0.1', 59122)
+[20/Oct/2026 19:30:58] "GET / HTTP/1.1" 302 0
+[20/Oct/2026 19:30:58] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:30:58] "GET /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2683
+Not Found: /favicon.ico
+[20/Oct/2026 19:30:58] "GET /favicon.ico HTTP/1.1" 404 2811
+[20/Oct/2026 19:34:37] "POST /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2806
+[20/Oct/2026 19:36:44] "POST /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2803
+[20/Oct/2026 19:36:44] "POST /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2767
+[20/Oct/2026 19:36:54] "POST /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2803
+[20/Oct/2026 19:37:21] "POST /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:37:21] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:37:21] "GET /residentes/ HTTP/1.1" 200 3640
+[20/Oct/2026 19:38:36] "GET /residentes/personas/ HTTP/1.1" 200 10427
+[20/Oct/2026 19:39:04] "GET /residentes/unidades/ HTTP/1.1" 200 10114
+[20/Oct/2026 19:39:35] "GET /residentes/residencias/ HTTP/1.1" 200 7260
+[20/Oct/2026 19:40:08] "GET /residentes/personas/ HTTP/1.1" 200 10427
+[20/Oct/2026 19:40:09] "GET /residentes/unidades/ HTTP/1.1" 200 10114
+[20/Oct/2026 19:40:11] "GET /residentes/residencias/ HTTP/1.1" 200 7260
+[20/Oct/2026 19:40:12] "GET /reservas/zonas/ HTTP/1.1" 200 5854
+[20/Oct/2026 19:40:14] "GET /reservas/ HTTP/1.1" 200 5139
+[20/Oct/2026 19:40:14] "GET /usuarios/ HTTP/1.1" 200 5450
+[20/Oct/2026 19:40:17] "POST /usuarios/logout/ HTTP/1.1" 302 0
+[20/Oct/2026 19:40:17] "GET /usuarios/login/ HTTP/1.1" 200 2666
+[20/Oct/2026 19:40:50] "POST /usuarios/login/ HTTP/1.1" 302 0
+[20/Oct/2026 19:40:50] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:40:50] "GET /residentes/ HTTP/1.1" 200 3553
+[20/Oct/2026 19:40:54] "GET /residentes/personas/ HTTP/1.1" 200 10340
+[20/Oct/2026 19:41:03] "POST /usuarios/logout/ HTTP/1.1" 302 0
+[20/Oct/2026 19:41:03] "GET /usuarios/login/ HTTP/1.1" 200 2666
+[20/Oct/2026 19:41:32] "POST /usuarios/login/ HTTP/1.1" 302 0
+[20/Oct/2026 19:41:32] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:41:32] "GET /residentes/ HTTP/1.1" 200 3540
+[20/Oct/2026 19:41:38] "GET /residentes/personas/ HTTP/1.1" 200 10327
+[20/Oct/2026 19:41:41] "GET /residentes/personas/ HTTP/1.1" 200 10327
+[20/Oct/2026 19:41:43] "GET /residentes/unidades/ HTTP/1.1" 200 10014
+[20/Oct/2026 19:41:43] "GET /residentes/residencias/ HTTP/1.1" 200 7160
+[20/Oct/2026 19:41:44] "GET /reservas/zonas/ HTTP/1.1" 200 3883
+[20/Oct/2026 19:41:44] "GET /reservas/ HTTP/1.1" 200 3997
+[20/Oct/2026 19:41:47] "GET /reservas/zonas/ HTTP/1.1" 200 3883
+[20/Oct/2026 19:41:48] "GET /residentes/residencias/ HTTP/1.1" 200 7160
+[20/Oct/2026 19:41:52] "GET /residentes/unidades/ HTTP/1.1" 200 10014
+[20/Oct/2026 19:41:56] "GET /reservas/zonas/ HTTP/1.1" 200 3883
+[20/Oct/2026 19:42:06] "POST /usuarios/logout/ HTTP/1.1" 302 0
+[20/Oct/2026 19:42:06] "GET /usuarios/login/ HTTP/1.1" 200 2666
+[20/Oct/2026 19:42:21] "POST /usuarios/login/ HTTP/1.1" 302 0
+[20/Oct/2026 19:42:21] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:42:21] "GET /reservas/ HTTP/1.1" 200 4194
+[20/Oct/2026 19:42:25] "GET /reservas/zonas/ HTTP/1.1" 200 3751
+[20/Oct/2026 19:42:26] "GET /reservas/ HTTP/1.1" 200 4194
+[20/Oct/2026 19:42:35] "POST /usuarios/logout/ HTTP/1.1" 302 0
+[20/Oct/2026 19:42:35] "GET /usuarios/login/ HTTP/1.1" 200 2666
+[20/Oct/2026 19:43:01] "POST /usuarios/login/ HTTP/1.1" 302 0
+[20/Oct/2026 19:43:01] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:43:01] "GET /reservas/ HTTP/1.1" 200 4194
+[20/Oct/2026 19:43:40] "POST /usuarios/logout/ HTTP/1.1" 302 0
+[20/Oct/2026 19:43:40] "GET /usuarios/login/ HTTP/1.1" 200 2666
+[20/Oct/2026 19:44:40] "GET / HTTP/1.1" 302 0
+[20/Oct/2026 19:44:40] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:44:40] "GET /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2683
+[20/Oct/2026 19:44:42,255] - Broken pipe from ('127.0.0.1', 60902)
+[20/Oct/2026 19:45:21] "GET / HTTP/1.1" 302 0
+[20/Oct/2026 19:45:21] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:45:21] "GET /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2683
+[20/Oct/2026 19:45:21,212] - Broken pipe from ('127.0.0.1', 60993)
+[20/Oct/2026 19:46:03] "GET / HTTP/1.1" 302 0
+[20/Oct/2026 19:46:03] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 19:46:03] "GET /usuarios/login/?next=/usuarios/inicio/ HTTP/1.1" 200 2683
+[20/Oct/2026 19:46:03,828] - Broken pipe from ('127.0.0.1', 61092)
+[20/Oct/2026 20:07:36] "POST /usuarios/login/ HTTP/1.1" 302 0
+[20/Oct/2026 20:07:36] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 20:07:36] "GET /reservas/ HTTP/1.1" 200 4194
+[20/Oct/2026 20:08:00] "GET /reservas/?zona=&estado= HTTP/1.1" 200 4194
+[20/Oct/2026 20:08:04] "GET /reservas/?zona=&estado= HTTP/1.1" 200 4194
+[20/Oct/2026 20:08:05] "GET /reservas/?zona=&estado= HTTP/1.1" 200 4194
+[20/Oct/2026 20:08:05] "GET /reservas/?zona=&estado= HTTP/1.1" 200 4194
+[20/Oct/2026 20:08:06] "GET /reservas/zonas/ HTTP/1.1" 200 3751
+[20/Oct/2026 20:08:11] "GET /reservas/nueva/?zona=2 HTTP/1.1" 200 3956
+[20/Oct/2026 20:08:18] "POST /usuarios/logout/ HTTP/1.1" 302 0
+[20/Oct/2026 20:08:18] "GET /usuarios/login/ HTTP/1.1" 200 2666
+[20/Oct/2026 20:08:25] "POST /usuarios/login/ HTTP/1.1" 302 0
+[20/Oct/2026 20:08:25] "GET /usuarios/inicio/ HTTP/1.1" 302 0
+[20/Oct/2026 20:08:25] "GET /residentes/ HTTP/1.1" 200 3553
+[20/Oct/2026 20:08:29] "GET /residentes/unidades/ HTTP/1.1" 200 10027
+[20/Oct/2026 20:08:47] "GET /reservas/ HTTP/1.1" 200 4626
+[20/Oct/2026 20:08:48] "GET /residentes/residencias/ HTTP/1.1" 200 7173
+[20/Oct/2026 20:08:57] "GET /residentes/unidades/ HTTP/1.1" 200 10027
+[20/Oct/2026 20:09:02] "GET /residentes/personas/ HTTP/1.1" 200 10340

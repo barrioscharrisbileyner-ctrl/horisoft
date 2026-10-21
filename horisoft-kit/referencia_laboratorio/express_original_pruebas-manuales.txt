@@ -1,0 +1,425 @@
+◇ injected env (3) from .env // tip: ⌘ enable debugging { debug: true }
+
+========== MODULO: ZONAS COMUNES ==========
+✅ [200] GET /zonas-comunes
+[
+  {
+    "id_zona": 1,
+    "nombre": "Salón Social",
+    "descripcion": "Salón para eventos y reuniones",
+    "capacidad": 50,
+    "costo_reserva": 80000,
+    "estado": "Disponible"
+  },
+  {
+    "id_zona": 2,
+    "nombre": "Piscina",
+    "descripcion": "Piscina para adultos y niños",
+    "capacidad": 30,
+    "costo_reserva": 0,
+    "estado": "Disponible"
+  },
+  {
+    "id_zona": 3,
+    "nombre": "Cancha Múltiple",
+    "descripcion": "Cancha de fútbol/baloncesto",
+    "capacidad": 20,
+    "costo_reserva": 30000,
+    "estado": "Mantenimiento"
+  }
+]
+
+✅ [201] POST /zonas-comunes (crear cancha de tenis)
+{
+  "mensaje": "Zona común creada correctamente",
+  "zona": {
+    "id_zona": 4,
+    "nombre": "Cancha de Tenis",
+    "descripcion": "Cancha techada",
+    "capacidad": 4,
+    "costo_reserva": 20000,
+    "estado": "Disponible"
+  }
+}
+
+❌ [400] POST /zonas-comunes (falta capacidad -> error)
+{
+  "mensaje": "nombre y capacidad son obligatorios"
+}
+
+
+========== MODULO: RESERVAS ==========
+❌ [400] POST /reservas (reserva valida)
+{
+  "mensaje": "No se pueden crear reservas en fechas pasadas"
+}
+
+❌ [400] POST /reservas (cruce de horario -> error)
+{
+  "mensaje": "No se pueden crear reservas en fechas pasadas"
+}
+
+❌ [404] PUT /reservas/1/estado (Confirmada)
+{
+  "mensaje": "Reserva no encontrada"
+}
+
+❌ [404] DELETE /reservas/1
+{
+  "mensaje": "Reserva no encontrada"
+}
+
+
+========== MODULO: VIGILANTES ==========
+✅ [200] GET /vigilantes
+[
+  {
+    "id_vigilante": 1,
+    "nombre": "Carlos Ramírez",
+    "documento": "1094567890",
+    "telefono": "3001234567",
+    "turno": "Diurno",
+    "estado": "Activo"
+  },
+  {
+    "id_vigilante": 2,
+    "nombre": "Luis Torres",
+    "documento": "1098765432",
+    "telefono": "3007654321",
+    "turno": "Nocturno",
+    "estado": "Inactivo"
+  }
+]
+
+✅ [201] POST /vigilantes (nuevo vigilante)
+{
+  "mensaje": "Vigilante creado correctamente",
+  "vigilante": {
+    "id_vigilante": 3,
+    "nombre": "Marta Lopez",
+    "documento": "1099887766",
+    "telefono": "3005556677",
+    "turno": "Mixto",
+    "estado": "Activo"
+  }
+}
+
+
+========== MODULO: VISITANTES ==========
+✅ [201] POST /visitantes (ingreso valido)
+{
+  "mensaje": "Ingreso registrado correctamente",
+  "visita": {
+    "id_visita": 1,
+    "nombre": "Pedro Gomez",
+    "documento": "555666777",
+    "id_residencia": 105,
+    "id_vigilante": 1,
+    "motivo": "Entrega domicilio",
+    "placa_vehiculo": null,
+    "fecha": "2026-10-19",
+    "hora_ingreso": "2026-10-19T02:45:54.962Z",
+    "hora_salida": null,
+    "estado": "En instalación"
+  }
+}
+
+❌ [400] POST /visitantes (mismo documento sin salida -> error)
+{
+  "mensaje": "Este visitante ya tiene un ingreso activo sin salida registrada"
+}
+
+✅ [200] PUT /visitantes/1/salida
+{
+  "mensaje": "Salida registrada correctamente",
+  "visita": {
+    "id_visita": 1,
+    "nombre": "Pedro Gomez",
+    "documento": "555666777",
+    "id_residencia": 105,
+    "id_vigilante": 1,
+    "motivo": "Entrega domicilio",
+    "placa_vehiculo": null,
+    "fecha": "2026-10-19",
+    "hora_ingreso": "2026-10-19T02:45:54.962Z",
+    "hora_salida": "2026-10-19T02:45:54.962Z",
+    "estado": "Finalizada"
+  }
+}
+
+
+========== MODULO: AUTENTICACION ==========
+✅ [201] POST /auth/registro
+{
+  "mensaje": "Usuario registrado correctamente",
+  "usuario": {
+    "id_usuario": 4,
+    "nombre": "Laura Martinez",
+    "correo": "laura@horisoft.com",
+    "rol": "Residente",
+    "estado": "Activo"
+  }
+}
+
+✅ [200] POST /auth/login (correcto)
+{
+  "mensaje": "¡Autenticación exitosa!",
+  "usuario": {
+    "id_usuario": 4,
+    "nombre": "Laura Martinez",
+    "correo": "laura@horisoft.com",
+    "rol": "Residente",
+    "estado": "Activo"
+  },
+  "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjo0LCJjb3JyZW8iOiJsYXVyYUBob3Jpc29mdC5jb20iLCJyb2wiOiJSZXNpZGVudGUiLCJpYXQiOjE3OTIzNzc5NTQsImV4cCI6MTc5MjM4MTU1NH0.8dGcIvZExsMvgHj7UzmQtUkSdgdYKHJ0vt1SMT4c7Sw"
+}
+
+❌ [401] POST /auth/login (password incorrecto -> error)
+{
+  "mensaje": "Credenciales inválidas"
+}
+
+
+========== MODULO: PQR ==========
+✅ [201] POST /pqr (crear queja)
+{
+  "mensaje": "PQR registrada correctamente",
+  "pqr": {
+    "id_pqr": 1,
+    "id_residencia": 103,
+    "tipo": "Queja",
+    "asunto": "Mascota suelta",
+    "descripcion": "Perro sin correa en zona comun",
+    "respuesta": null,
+    "fecha_creacion": "2026-10-19T02:45:54.965Z",
+    "estado": "Abierta"
+  }
+}
+
+✅ [200] PUT /pqr/1/respuesta
+{
+  "mensaje": "Respuesta registrada, PQR cerrada",
+  "pqr": {
+    "id_pqr": 1,
+    "id_residencia": 103,
+    "tipo": "Queja",
+    "asunto": "Mascota suelta",
+    "descripcion": "Perro sin correa en zona comun",
+    "respuesta": "Se envio circular recordando el reglamento de mascotas",
+    "fecha_creacion": "2026-10-19T02:45:54.965Z",
+    "estado": "Cerrada"
+  }
+}
+
+❌ [400] PUT /pqr/1/respuesta (ya cerrada -> error)
+{
+  "mensaje": "No se puede responder una PQR que ya está cerrada"
+}
+
+
+========== MODULO: COMUNICACIONES ==========
+✅ [201] POST /comunicados
+{
+  "mensaje": "Comunicado publicado correctamente",
+  "comunicado": {
+    "id_comunicado": 2,
+    "titulo": "Asamblea general",
+    "contenido": "Se cita a asamblea el 30 de agosto",
+    "dirigido_a": "Residentes",
+    "id_autor": 1,
+    "fecha_publicacion": "2026-10-19T02:45:54.965Z",
+    "estado": "Publicado"
+  }
+}
+
+✅ [200] PUT /comunicados/2/archivar
+{
+  "id_comunicado": 2,
+  "titulo": "Asamblea general",
+  "contenido": "Se cita a asamblea el 30 de agosto",
+  "dirigido_a": "Residentes",
+  "id_autor": 1,
+  "fecha_publicacion": "2026-10-19T02:45:54.965Z",
+  "estado": "Archivado"
+}
+
+
+========== MODULO: FINANCIERA ==========
+✅ [200] GET /cuentas-cobro
+[
+  {
+    "id_cuenta": 1,
+    "id_residencia": 101,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 0,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pendiente"
+  },
+  {
+    "id_cuenta": 2,
+    "id_residencia": 102,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 0,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pendiente"
+  }
+]
+
+✅ [201] POST /pagos (pago parcial)
+{
+  "mensaje": "Pago registrado correctamente",
+  "pago": {
+    "id_pago": 1,
+    "id_cuenta": 2,
+    "valor_pagado": 100000,
+    "metodo_pago": "Transferencia",
+    "fecha_pago": "2026-10-19T02:45:54.966Z"
+  },
+  "cuenta": {
+    "id_cuenta": 2,
+    "id_residencia": 102,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 100000,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pendiente"
+  }
+}
+
+❌ [400] POST /pagos (excede saldo -> error)
+{
+  "mensaje": "El valor pagado ($100000) excede el saldo pendiente ($50000)"
+}
+
+✅ [201] POST /pagos (completa el saldo)
+{
+  "mensaje": "Pago registrado correctamente",
+  "pago": {
+    "id_pago": 2,
+    "id_cuenta": 2,
+    "valor_pagado": 50000,
+    "metodo_pago": "Efectivo",
+    "fecha_pago": "2026-10-19T02:45:54.966Z"
+  },
+  "cuenta": {
+    "id_cuenta": 2,
+    "id_residencia": 102,
+    "concepto": "Cuota de administración - Julio 2026",
+    "valor": 150000,
+    "valor_pagado": 150000,
+    "fecha_vencimiento": "2026-07-31",
+    "estado": "Pagada"
+  }
+}
+
+
+========== MODULO: PROVEEDORES ==========
+✅ [201] POST /proveedores
+{
+  "mensaje": "Proveedor creado correctamente",
+  "proveedor": {
+    "id_proveedor": 2,
+    "nombre": "Seguridad Total SAS",
+    "nit": "900555444-2",
+    "servicio": "Vigilancia",
+    "telefono": "3201112233",
+    "estado": "Activo"
+  }
+}
+
+✅ [200] DELETE /proveedores/1
+{
+  "mensaje": "Proveedor eliminado"
+}
+
+
+========== MODULO: INVENTARIO ==========
+✅ [201] POST /inventario
+{
+  "mensaje": "Ítem registrado correctamente",
+  "item": {
+    "id_item": 3,
+    "nombre": "Extintores",
+    "categoria": "Seguridad",
+    "cantidad": 10,
+    "ubicacion": "Pasillos",
+    "estado": "Bueno"
+  }
+}
+
+✅ [200] PUT /inventario/1/cantidad
+{
+  "id_item": 1,
+  "nombre": "Sillas plásticas",
+  "categoria": "Mobiliario",
+  "cantidad": 48,
+  "ubicacion": "Depósito Salón Social",
+  "estado": "Bueno"
+}
+
+
+========== MODULO: VEHICULOS ==========
+✅ [201] POST /vehiculos
+{
+  "mensaje": "Vehículo registrado correctamente",
+  "vehiculo": {
+    "id_vehiculo": 2,
+    "placa": "JKL456",
+    "id_residencia": 104,
+    "tipo": "Moto",
+    "color": "Rojo",
+    "estado": "Activo"
+  }
+}
+
+❌ [400] POST /vehiculos (placa duplicada -> error)
+{
+  "mensaje": "Ya existe un vehículo registrado con esa placa"
+}
+
+
+========== MODULO: DOCUMENTOS ==========
+✅ [201] POST /documentos
+{
+  "mensaje": "Documento registrado correctamente",
+  "documento": {
+    "id_documento": 1,
+    "titulo": "Acta Asamblea 2026",
+    "tipo": "Acta",
+    "id_responsable": 1,
+    "url_archivo": "/docs/acta2026.pdf",
+    "fecha_subida": "2026-10-19T02:45:54.966Z"
+  }
+}
+
+
+========== MODULO: CONFIGURACION ==========
+✅ [200] PUT /configuracion/dia_pago_cuota
+{
+  "clave": "dia_pago_cuota",
+  "valor": "10",
+  "descripcion": "Día límite de pago mensual de la cuota de administración"
+}
+
+✅ [200] GET /configuracion
+[
+  {
+    "clave": "nombre_conjunto",
+    "valor": "Conjunto Residencial Los Álamos",
+    "descripcion": "Nombre del conjunto"
+  },
+  {
+    "clave": "dia_pago_cuota",
+    "valor": "10",
+    "descripcion": "Día límite de pago mensual de la cuota de administración"
+  },
+  {
+    "clave": "porcentaje_mora",
+    "valor": "1.5",
+    "descripcion": "Porcentaje de interés de mora mensual"
+  }
+]
+
+========== FIN DE LAS PRUEBAS ==========

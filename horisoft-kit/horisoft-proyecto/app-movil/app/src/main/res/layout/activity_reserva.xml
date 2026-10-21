@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/horisoft_fondo"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reserva_titulo"
+            style="@style/TituloPantalla" />
+
+        <TextView
+            android:id="@+id/tvReservaZona"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/horisoft_azul"
+            android:textSize="18sp"
+            tools:text="Salón Social" />
+
+        <EditText
+            android:id="@+id/etFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:focusable="false"
+            android:hint="@string/reserva_hint_fecha"
+            android:importantForAutofill="no"
+            android:inputType="none" />
+
+        <EditText
+            android:id="@+id/etHoraInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:focusable="false"
+            android:hint="@string/reserva_hint_hora_inicio"
+            android:importantForAutofill="no"
+            android:inputType="none" />
+
+        <EditText
+            android:id="@+id/etHoraFin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:focusable="false"
+            android:hint="@string/reserva_hint_hora_fin"
+            android:importantForAutofill="no"
+            android:inputType="none" />
+
+        <EditText
+            android:id="@+id/etObservaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/reserva_hint_observaciones"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|textCapSentences"
+            android:minLines="2" />
+
+        <Button
+            android:id="@+id/btnConfirmarReserva"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reserva_boton_confirmar"
+            style="@style/BotonHorisoft" />
+
+        <ProgressBar
+            android:id="@+id/progresoReserva"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvMensajeReserva"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            tools:text="Ya existe una reserva activa para esa zona en ese horario" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/fondo_tarjeta"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvReservaItemZona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/horisoft_azul_oscuro"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Salón Social" />
+
+    <TextView
+        android:id="@+id/tvReservaItemHorario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/horisoft_texto"
+        tools:text="2026-10-20  ·  14:00 – 16:00" />
+
+    <TextView
+        android:id="@+id/tvReservaItemEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold"
+        tools:text="Pendiente" />
+
+    <Button
+        android:id="@+id/btnCancelarReserva"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/reserva_boton_cancelar"
+        style="@style/BotonHorisoftSecundario" />
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/fondo_tarjeta"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvZonaNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/horisoft_azul_oscuro"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Salón Social" />
+
+    <TextView
+        android:id="@+id/tvZonaDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/horisoft_texto"
+        tools:text="Salón para eventos y reuniones" />
+
+    <TextView
+        android:id="@+id/tvZonaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/horisoft_texto_suave"
+        tools:text="Capacidad: 50 personas  ·  Costo: $80.000" />
+
+    <TextView
+        android:id="@+id/tvZonaEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold"
+        tools:text="Disponible" />
+
+    <Button
+        android:id="@+id/btnReservar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/zona_boton_reservar"
+        style="@style/BotonHorisoft" />
+
+</LinearLayout>

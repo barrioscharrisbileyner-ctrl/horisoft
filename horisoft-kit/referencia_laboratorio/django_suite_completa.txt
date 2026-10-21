@@ -1,0 +1,109 @@
+Found 40 test(s).
+Creating test database for alias 'default' ('test_horisoft_db')...
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: admin, auth, contenttypes, reservas, residentes, sessions, usuarios
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying residentes.0001_initial... OK
+  Applying reservas.0001_initial... OK
+  Applying sessions.0001_initial... OK
+  Applying usuarios.0001_initial... OK
+System check identified no issues (0 silenced).
+test_cp20_reserva_valida_nace_pendiente (reservas.tests.ReglasDeNegocioTest.test_cp20_reserva_valida_nace_pendiente)
+CP-20: una reserva válida se guarda en estado Pendiente. ... ok
+test_cp21_zona_en_mantenimiento_rechazada (reservas.tests.ReglasDeNegocioTest.test_cp21_zona_en_mantenimiento_rechazada)
+CP-21: no se puede reservar una zona que no está Disponible. ... ok
+test_cp22_fecha_pasada_rechazada_y_hoy_permitido (reservas.tests.ReglasDeNegocioTest.test_cp22_fecha_pasada_rechazada_y_hoy_permitido)
+CP-22: no se reserva en el pasado; hoy (fecha local) sí es válido. ... ok
+test_cp23_hora_fin_debe_ser_posterior (reservas.tests.ReglasDeNegocioTest.test_cp23_hora_fin_debe_ser_posterior)
+CP-23: la hora de fin debe ser posterior a la de inicio. ... ok
+test_cp24_cruce_de_horario (reservas.tests.ReglasDeNegocioTest.test_cp24_cruce_de_horario)
+CP-24: se rechaza un cruce; contiguas y canceladas no cuentan como cruce. ... ok
+test_cp25_un_residente_solo_reserva_a_nombre_de_sus_residencias (reservas.tests.ReglasDeNegocioTest.test_cp25_un_residente_solo_reserva_a_nombre_de_sus_residencias)
+CP-25: un Residente no puede reservar con la residencia de otra persona. ... ok
+test_cp26_residente_ve_solo_sus_reservas (reservas.tests.VistasYRolesTest.test_cp26_residente_ve_solo_sus_reservas)
+CP-26: la lista de reservas de un Residente solo incluye las suyas. ... ok
+test_cp27_residente_crea_y_cancela_solo_las_suyas (reservas.tests.VistasYRolesTest.test_cp27_residente_crea_y_cancela_solo_las_suyas)
+CP-27: un Residente crea su reserva y la cancela; no puede tocar la de otro. ... ok
+test_cp28_matriz_de_roles_en_reservas_y_zonas (reservas.tests.VistasYRolesTest.test_cp28_matriz_de_roles_en_reservas_y_zonas)
+CP-28: Administrativo confirma; Vigilante solo consulta; Residente no gestiona zonas. ... ok
+test_cp29_no_se_borra_lo_que_tiene_reservas (reservas.tests.VistasYRolesTest.test_cp29_no_se_borra_lo_que_tiene_reservas)
+CP-29: zonas y residencias con reservas quedan protegidas (mensaje, sin error 500). ... ok
+test_cp01_crear_residente_valido (residentes.tests.PlanManualResidentesTest.test_cp01_crear_residente_valido)
+CP-01: el residente se guarda y aparece en la lista. ... ok
+test_cp02_crear_residente_sin_documento (residentes.tests.PlanManualResidentesTest.test_cp02_crear_residente_sin_documento)
+CP-02: no guarda y muestra "Este campo es obligatorio.". ... ok
+test_cp03_crear_unidad_valida (residentes.tests.PlanManualResidentesTest.test_cp03_crear_unidad_valida)
+CP-03: la unidad se guarda y aparece en la lista. ... ok
+test_cp04_asociar_residente_a_unidad (residentes.tests.PlanManualResidentesTest.test_cp04_asociar_residente_a_unidad)
+CP-04: se crea la residencia y aparece en la lista. ... ok
+test_cp05_dos_propietarios_en_la_misma_unidad (residentes.tests.PlanManualResidentesTest.test_cp05_dos_propietarios_en_la_misma_unidad)
+CP-05: muestra el error de validación y no guarda. ... ok
+test_cp06_residencia_duplicada (residentes.tests.PlanManualResidentesTest.test_cp06_residencia_duplicada)
+CP-06: muestra el error de validación y no guarda. ... ok
+test_cp07_listar_con_paginacion (residentes.tests.PlanManualResidentesTest.test_cp07_listar_con_paginacion)
+CP-07: 10 por página y controles de paginación (12 residentes -> 2 páginas). ... ok
+test_cp08_editar_residente (residentes.tests.PlanManualResidentesTest.test_cp08_editar_residente)
+CP-08: el cambio de teléfono queda reflejado en la lista. ... ok
+test_cp09_eliminar_con_confirmacion (residentes.tests.PlanManualResidentesTest.test_cp09_eliminar_con_confirmacion)
+CP-09: el botón pide confirmación (JS) y solo un POST elimina. ... ok
+test_cp30_sin_sesion_redirige_al_login (residentes.tests.ProteccionPorRolTest.test_cp30_sin_sesion_redirige_al_login)
+CP-30: sin sesión, las vistas de Residentes redirigen al login y no ejecutan nada. ... ok
+test_cp31_matriz_de_roles_en_residentes (residentes.tests.ProteccionPorRolTest.test_cp31_matriz_de_roles_en_residentes)
+CP-31: Admin/Administrativo gestionan; Vigilante solo consulta; Residente y Proveedor no entran. ... ok
+test_crear_residencia_valida (residentes.tests.ResidenciaReglasDeNegocioTest.test_crear_residencia_valida) ... ok
+test_no_permite_dos_propietarios_activos (residentes.tests.ResidenciaReglasDeNegocioTest.test_no_permite_dos_propietarios_activos) ... ok
+test_no_permite_residencia_duplicada (residentes.tests.ResidenciaReglasDeNegocioTest.test_no_permite_residencia_duplicada) ... ok
+test_crear_persona_por_post (residentes.tests.VistasCRUDTest.test_crear_persona_por_post) ... ok
+test_crear_persona_sin_documento_no_guarda (residentes.tests.VistasCRUDTest.test_crear_persona_sin_documento_no_guarda) ... ok
+test_crear_unidad_por_post (residentes.tests.VistasCRUDTest.test_crear_unidad_por_post) ... ok
+test_eliminar_unidad_requiere_post (residentes.tests.VistasCRUDTest.test_eliminar_unidad_requiere_post) ... ok
+test_lista_personas_responde_200 (residentes.tests.VistasCRUDTest.test_lista_personas_responde_200) ... ok
+test_cp10_admin_crea_usuario_valido (usuarios.tests.AutenticacionYRolesTests.test_cp10_admin_crea_usuario_valido)
+CP-10: un Administrador crea un usuario válido (User + PerfilUsuario). ... ok
+test_cp11_correo_duplicado_rechazado (usuarios.tests.AutenticacionYRolesTests.test_cp11_correo_duplicado_rechazado)
+CP-11: no se permite un correo ya registrado (sin distinguir mayúsculas). ... ok
+test_cp12_contrasenas_distintas_rechazadas (usuarios.tests.AutenticacionYRolesTests.test_cp12_contrasenas_distintas_rechazadas)
+CP-12: las dos contraseñas deben coincidir. ... ok
+test_cp13_residente_requiere_persona (usuarios.tests.AutenticacionYRolesTests.test_cp13_residente_requiere_persona)
+CP-13: un Residente exige una Persona; con ella se crea y queda vinculada. ... ok
+test_cp14_login_correcto (usuarios.tests.AutenticacionYRolesTests.test_cp14_login_correcto)
+CP-14: login con correo y contraseña correctos (el correo no distingue mayúsculas). ... ok
+test_cp15_login_incorrecto_o_cuenta_inactiva (usuarios.tests.AutenticacionYRolesTests.test_cp15_login_incorrecto_o_cuenta_inactiva)
+CP-15: contraseña incorrecta y cuenta inactiva no inician sesión. ... ok
+test_cp16_vistas_protegidas_sin_sesion_redirigen_al_login (usuarios.tests.AutenticacionYRolesTests.test_cp16_vistas_protegidas_sin_sesion_redirigen_al_login)
+CP-16: sin sesión, las vistas protegidas redirigen al login. ... ok
+test_cp17_rol_requerido_permite_y_niega (usuarios.tests.AutenticacionYRolesTests.test_cp17_rol_requerido_permite_y_niega)
+CP-17: @rol_requerido deja pasar al Administrador y responde 403 a otros roles. ... ok
+test_cp18_admin_no_puede_bloquearse_a_si_mismo (usuarios.tests.AutenticacionYRolesTests.test_cp18_admin_no_puede_bloquearse_a_si_mismo)
+CP-18: un Administrador no puede desactivarse ni quitarse su rol. ... ok
+test_cp19_comando_crear_administrador (usuarios.tests.AutenticacionYRolesTests.test_cp19_comando_crear_administrador)
+CP-19: el comando crear_administrador deja un usuario que puede entrar. ... ok
+test_cp32_inicio_lleva_a_cada_rol_a_su_seccion (usuarios.tests.AutenticacionYRolesTests.test_cp32_inicio_lleva_a_cada_rol_a_su_seccion)
+CP-32: tras el login, cada rol llega a su sección principal. ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 15.582s
+
+OK
+Destroying test database for alias 'default' ('test_horisoft_db')...

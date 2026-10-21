@@ -1,0 +1,15 @@
+◇ injected env (3) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+✅ CP-JWT-01: login correcto responde 200
+✅ CP-JWT-01: la respuesta incluye un token
+✅ CP-JWT-02: login con password incorrecto responde 401
+✅ CP-JWT-03: /usuarios sin token responde 401
+✅ CP-JWT-04: /usuarios con token inválido responde 403
+✅ CP-JWT-05: /usuarios con token válido responde 200
+✅ CP-JWT-05: /usuarios devuelve la lista de usuarios
+✅ CP-JWT-05: el password nunca se expone
+✅ CP-JWT-06: /auth/perfil responde 200 con token válido
+✅ CP-JWT-06: el payload decodificado incluye el rol
+✅ CP-JWT-07: token sin el prefijo 'Bearer' responde 401
+
+--------------------------------------------------
+Resultado: 11 pruebas correctas, 0 fallidas.

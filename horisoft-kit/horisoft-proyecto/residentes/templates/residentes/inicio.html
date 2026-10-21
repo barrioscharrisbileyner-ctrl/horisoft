@@ -1,0 +1,34 @@
+{% extends 'residentes/base.html' %}
+{% block titulo %}Inicio{% endblock %}
+{% block contenido %}
+<h2 class="mb-4">Módulo: Residentes y Unidades</h2>
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Residentes</h5>
+        <p class="display-6">{{ total_personas }}</p>
+        <a href="{% url 'residentes:personas' %}" class="btn btn-success">Ver residentes</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Unidades residenciales</h5>
+        <p class="display-6">{{ total_unidades }}</p>
+        <a href="{% url 'residentes:unidades' %}" class="btn btn-success">Ver unidades</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Residencias activas</h5>
+        <p class="display-6">{{ total_residencias }}</p>
+        <a href="{% url 'residentes:residencias' %}" class="btn btn-success">Ver residencias</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

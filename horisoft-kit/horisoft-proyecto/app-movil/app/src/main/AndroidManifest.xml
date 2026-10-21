@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Necesario para consumir la API de Horisoft (Express + JWT) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Horisoft"
+        android:usesCleartextTraffic="true">
+        <!--
+            usesCleartextTraffic="true": el backend de Horisoft corre en
+            HTTP (no HTTPS) durante desarrollo. Sin esta línea, Android 9+
+            bloquea la conexión por defecto. Quitar esto (o restringirlo)
+            si algún día el backend se sirve con HTTPS en producción.
+
+            Pendiente (Fase 0): ícono de lanzador propio. Se agrega con
+            Android Studio > New > Image Asset y luego se añade android:icon
+            aquí. Mientras tanto la app usa el ícono genérico del sistema.
+        -->
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".HomeActivity" android:exported="false" />
+        <activity android:name=".ZonasComunesActivity" android:exported="false" />
+        <activity android:name=".ReservaActivity" android:exported="false" />
+        <activity android:name=".MisReservasActivity" android:exported="false" />
+
+    </application>
+
+</manifest>

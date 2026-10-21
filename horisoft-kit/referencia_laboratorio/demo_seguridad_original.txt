@@ -1,0 +1,4 @@
+# demo_inc04_inc05_seguridad.js — backend original
+Usuario autenticado: Juan Pérez | rol: Residente
+INC-05  POST /zonas-comunes con rol Residente -> HTTP 201 ❌ (debería ser 403: solo Administrador/Administrativo)
+INC-04  contraseña almacenada del Residente: "juan123" ❌ (texto plano, sin hash)

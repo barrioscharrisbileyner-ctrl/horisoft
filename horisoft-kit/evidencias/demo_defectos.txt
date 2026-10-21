@@ -1,0 +1,16 @@
+﻿Horisoft - Demostraciones de defectos
+Fecha: mar. 20/10/2026 19:45:56,87
+
+===== DEMO 1 - BUG-002 zona horaria =====
+Hora UTC:        2026-10-21T00:45:56.985Z
+Hoy en Colombia: 2026-10-20   |   Hoy en UTC (lo que usaba el servidor): 2026-10-21
+✅ RESERVA ACEPTADA (id 1) para 2026-10-20
+
+===== DEMO 2 - BUG-005 y BUG-006 seguridad =====
+◇ injected env (3) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+Usuario autenticado: Juan Pérez | rol: Residente
+INC-05  POST /zonas-comunes con rol Residente -> HTTP 201 ❌ (debería ser 403: solo Administrador/Administrativo)
+INC-04  contraseña almacenada del Residente: "[REDACTED]" ❌ (texto plano, sin hash)
+
+
+[ OK ] Ambas demos finalizaron correctamente.
