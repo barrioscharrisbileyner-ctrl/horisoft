@@ -1,0 +1,19 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}PQR{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>PQRs</h2>
+  <a href="{% url 'pqrs:crear' %}" class="btn btn-success">Nueva PQR</a>
+</div>
+<ul class="list-group mb-3">
+  {% for pqr in pqrs %}
+    <li class="list-group-item">
+      <a href="{% url 'pqrs:detalle' pqr.pk %}">{{ pqr.asunto }}</a>
+      <span class="text-muted">({{ pqr.tipo }} - {{ pqr.estado }})</span>
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">No hay PQRs registradas.</li>
+  {% endfor %}
+</ul>
+{% include "residentes/paginacion.html" %}
+{% endblock %}

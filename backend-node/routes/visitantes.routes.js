@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/visitantes.controller");
-const verificarToken = require("../middlewares/authMiddleware");
+const { autorizarMetodos } = require("../middlewares/authorizationMiddleware");
+
+router.use(autorizarMetodos({
+    POST: ["Administrador", "Administrativo", "Vigilante"],
+    PUT: ["Administrador", "Administrativo", "Vigilante"],
+    DELETE: ["Administrador", "Administrativo"],
+}));
 
 // GET    /visitantes              -> listar todos, o ?activas=true (público)
 // GET    /visitantes/:id          -> obtener un registro específico (público)
@@ -12,8 +18,8 @@ const verificarToken = require("../middlewares/authMiddleware");
 
 router.get("/", controller.listar);
 router.get("/:id", controller.obtener);
-router.post("/", verificarToken, controller.registrarIngreso);
-router.put("/:id/salida", verificarToken, controller.registrarSalida);
-router.delete("/:id", verificarToken, controller.eliminar);
+router.post("/", controller.registrarIngreso);
+router.put("/:id/salida", controller.registrarSalida);
+router.delete("/:id", controller.eliminar);
 
 module.exports = router;

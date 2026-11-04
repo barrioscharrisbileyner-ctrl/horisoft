@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const usuarios = require("../data/usuarios");
 const Usuario = require("../models/usuario.model");
 
@@ -18,12 +19,21 @@ if (!JWT_SECRET) {
 
 class AuthService {
 
+    sinCredenciales(usuario) {
+        const { passwordHash, ...datos } = usuario;
+        return datos;
+    }
+
     obtenerTodos() {
-        // No exponer la contraseña al listar usuarios
-        return usuarios.map(({ password, ...resto }) => resto);
+        return usuarios.map(usuario => this.sinCredenciales(usuario));
     }
 
     obtenerPorId(id_usuario) {
+        const usuario = this.buscarPorId(id_usuario);
+        return this.sinCredenciales(usuario);
+    }
+
+    buscarPorId(id_usuario) {
         const usuario = usuarios.find(u => u.id_usuario === Number(id_usuario));
 
         if (!usuario) {
@@ -41,9 +51,14 @@ class AuthService {
      */
     registrar(datos) {
 
-        const { nombre, correo, password, rol } = datos;
+        const { nombre, correo, password, rol, id_residencia } = datos;
 
-        if (!nombre || !correo || !password || !rol) {
+        if (
+            typeof nombre !== "string" || !nombre.trim()
+            || typeof correo !== "string" || !correo.trim()
+            || typeof password !== "string" || !password
+            || typeof rol !== "string" || !rol
+        ) {
             throw new Error("nombre, correo, password y rol son obligatorios");
         }
 
@@ -51,8 +66,9 @@ class AuthService {
             throw new Error(`Rol inválido. Use uno de: ${ROLES_VALIDOS.join(", ")}`);
         }
 
+        const correoNormalizado = correo.trim().toLowerCase();
         const correoDuplicado = usuarios.some(
-            u => u.correo.toLowerCase() === correo.toLowerCase()
+            u => u.correo.toLowerCase() === correoNormalizado
         );
 
         if (correoDuplicado) {
@@ -63,16 +79,16 @@ class AuthService {
             usuarios.length > 0
                 ? Math.max(...usuarios.map(u => u.id_usuario)) + 1
                 : 1,
-            nombre,
-            correo,
+            nombre.trim(),
+            correoNormalizado,
             password,
-            rol
+            rol,
+            "Activo",
+            id_residencia ? Number(id_residencia) : null
         );
 
         usuarios.push(nuevoUsuario);
-
-        const { password: _oculto, ...usuarioSinPassword } = nuevoUsuario;
-        return usuarioSinPassword;
+        return this.sinCredenciales(nuevoUsuario);
     }
 
     /**
@@ -85,17 +101,17 @@ class AuthService {
      */
     login(correo, password) {
 
-        if (!correo || !password) {
+        if (typeof correo !== "string" || !correo.trim() || typeof password !== "string" || !password) {
             throw new Error("correo y password son obligatorios");
         }
 
         const usuario = usuarios.find(
-            u => u.correo.toLowerCase() === correo.toLowerCase()
+            u => u.correo.toLowerCase() === correo.trim().toLowerCase()
         );
 
         // Mensaje genérico a propósito: no revelar si el correo existe o no,
         // para no facilitar enumeración de cuentas.
-        if (!usuario || usuario.password !== password) {
+        if (!usuario || !bcrypt.compareSync(password, usuario.passwordHash)) {
             throw new Error("Credenciales inválidas");
         }
 
@@ -103,10 +119,9 @@ class AuthService {
             throw new Error("El usuario se encuentra inactivo");
         }
 
-        const { password: _oculto, ...usuarioSinPassword } = usuario;
         const token = this.generarToken(usuario);
 
-        return { usuario: usuarioSinPassword, token };
+        return { usuario: this.sinCredenciales(usuario), token };
     }
 
     /**
@@ -119,6 +134,7 @@ class AuthService {
             id_usuario: usuario.id_usuario,
             correo: usuario.correo,
             rol: usuario.rol,
+            id_residencia: usuario.id_residencia,
         };
 
         return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
@@ -130,11 +146,10 @@ class AuthService {
             throw new Error(`Rol inválido. Use uno de: ${ROLES_VALIDOS.join(", ")}`);
         }
 
-        const usuario = this.obtenerPorId(id_usuario);
+        const usuario = this.buscarPorId(id_usuario);
         usuario.rol = rol;
 
-        const { password, ...usuarioSinPassword } = usuario;
-        return usuarioSinPassword;
+        return this.sinCredenciales(usuario);
     }
 
     actualizarEstado(id_usuario, estado) {
@@ -143,11 +158,10 @@ class AuthService {
             throw new Error(`Estado inválido. Use uno de: ${ESTADOS_VALIDOS.join(", ")}`);
         }
 
-        const usuario = this.obtenerPorId(id_usuario);
+        const usuario = this.buscarPorId(id_usuario);
         usuario.estado = estado;
 
-        const { password, ...usuarioSinPassword } = usuario;
-        return usuarioSinPassword;
+        return this.sinCredenciales(usuario);
     }
 
     eliminar(id_usuario) {

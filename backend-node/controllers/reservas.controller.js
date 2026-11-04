@@ -21,7 +21,15 @@ class ReservasController {
 
     crear(req, res) {
         try {
-            const reserva = reservasService.crear(req.body);
+            // Si el usuario autenticado pertenece a una residencia, se usa la del
+            // token (no la del body): así un residente no puede reservar a nombre
+            // de otra residencia. Un usuario sin residencia (ej. Administrador)
+            // debe indicar id_residencia en el body.
+            const datos = { ...req.body };
+            if (req.usuario && req.usuario.id_residencia) {
+                datos.id_residencia = req.usuario.id_residencia;
+            }
+            const reserva = reservasService.crear(datos);
 
             res.status(201).json({
                 mensaje: "Reserva creada correctamente",

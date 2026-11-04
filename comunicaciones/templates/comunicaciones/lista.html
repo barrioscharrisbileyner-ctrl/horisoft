@@ -1,0 +1,36 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Comunicaciones{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Comunicaciones</h2>
+    {% if es_admin %}
+        <a href="{% url 'comunicaciones:crear' %}" class="btn btn-success">Nuevo comunicado</a>
+    {% endif %}
+</div>
+
+{% if comunicados %}
+    <div class="list-group mb-3">
+        {% for comunicado in comunicados %}
+            <article class="list-group-item">
+                <strong>{{ comunicado.titulo }}</strong>
+                <span class="text-muted">({{ comunicado.dirigido_a }})</span>
+                <p class="mb-2">{{ comunicado.contenido }}</p>
+                {% if es_admin %}
+                    {% if comunicado.estado == 'Archivado' %}
+                        <span class="badge text-bg-secondary">Archivado</span>
+                    {% else %}
+                        <form method="post" action="{% url 'comunicaciones:archivar' comunicado.pk %}"
+                              onsubmit="return confirm('¿Archivar este comunicado?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Archivar</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-muted">No hay comunicados para este perfil.</p>
+{% endif %}
+{% include "residentes/paginacion.html" %}
+{% endblock %}

@@ -9,6 +9,7 @@
  * ------------------------------------------------------------------
  */
 
+process.env.NODE_ENV = "test";
 const app = require("./app");
 
 const PUERTO_PRUEBAS = 4001;
@@ -37,6 +38,12 @@ async function ejecutarPruebas() {
             body: JSON.stringify({ correo: "admin@horisoft.com", password: "admin123" }),
         });
         const { token } = await respLogin.json();
+        const respLoginResidente = await fetch(`${base}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ correo: "juan.perez@horisoft.com", password: "juan123" }),
+        });
+        const { token: tokenResidente } = await respLoginResidente.json();
 
         // ---------- Zonas Comunes: lectura pública ----------
         const respListarZonas = await fetch(`${base}/zonas-comunes`);
@@ -56,6 +63,13 @@ async function ejecutarPruebas() {
             body: JSON.stringify({ nombre: "Gimnasio", descripcion: "Zona de ejercicio", capacidad: 15, costo_reserva: 0 }),
         });
         verificar("CP-MOD-03: POST /zonas-comunes con token válido responde 201", respCrearZonaConToken.status === 201);
+
+        const respCrearZonaResidente = await fetch(`${base}/zonas-comunes`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: tokenResidente },
+            body: JSON.stringify({ nombre: "Zona no autorizada", descripcion: "Prueba de permisos", capacidad: 15, costo_reserva: 0 }),
+        });
+        verificar("CP-MOD-03A: un residente no puede crear zonas comunes", respCrearZonaResidente.status === 403);
 
         // ---------- Reservas: lectura pública ----------
         const respListarReservas = await fetch(`${base}/reservas`);
@@ -93,11 +107,14 @@ async function ejecutarPruebas() {
 
     } finally {
         servidor.close();
+        if (servidor.closeAllConnections) servidor.closeAllConnections();
     }
 
     console.log(`\n--------------------------------------------------`);
     console.log(`Resultado: ${aciertos} pruebas correctas, ${fallos} fallidas.`);
-    process.exit(fallos > 0 ? 1 : 0);
+    // process.exit() se evita a propósito: en Windows, forzar la salida mientras Node cierra
+    // el servidor provoca «Assertion failed ... src\win\async.c» (código -1073740791).
+    process.exitCode = fallos > 0 ? 1 : 0;
 }
 
 ejecutarPruebas();

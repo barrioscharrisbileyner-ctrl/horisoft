@@ -1,0 +1,33 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Configuración{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Configuración del conjunto</h2>
+    {% if es_admin %}
+        <a href="{% url 'configuracion:crear' %}" class="btn btn-success">Nuevo parámetro</a>
+    {% endif %}
+</div>
+
+{% if parametros %}
+    <div class="list-group mb-3">
+        {% for parametro in parametros %}
+            <article class="list-group-item">
+                <strong>{{ parametro.clave }}</strong>
+                <p class="mb-1">Valor: {{ parametro.valor }}</p>
+                {% if parametro.descripcion %}<p class="mb-2">{{ parametro.descripcion }}</p>{% endif %}
+                {% if es_admin %}
+                    <a href="{% url 'configuracion:editar' parametro.clave %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <form method="post" action="{% url 'configuracion:eliminar' parametro.clave %}" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar este parámetro? Esta acción no se puede deshacer.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                    </form>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-muted">No hay parámetros de configuración.</p>
+{% endif %}
+{% include "residentes/paginacion.html" %}
+{% endblock %}

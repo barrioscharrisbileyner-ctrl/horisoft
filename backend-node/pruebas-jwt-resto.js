@@ -11,6 +11,7 @@
  * ------------------------------------------------------------------
  */
 
+process.env.NODE_ENV = "test";
 const app = require("./app");
 
 const PUERTO_PRUEBAS = 4003;
@@ -187,11 +188,14 @@ async function ejecutarPruebas() {
 
     } finally {
         servidor.close();
+        if (servidor.closeAllConnections) servidor.closeAllConnections();
     }
 
     console.log(`\n--------------------------------------------------`);
     console.log(`Resultado: ${aciertos} pruebas correctas, ${fallos} fallidas.`);
-    process.exit(fallos > 0 ? 1 : 0);
+    // process.exit() se evita a propósito: en Windows, forzar la salida mientras Node cierra
+    // el servidor provoca «Assertion failed ... src\win\async.c» (código -1073740791).
+    process.exitCode = fallos > 0 ? 1 : 0;
 }
 
 ejecutarPruebas();

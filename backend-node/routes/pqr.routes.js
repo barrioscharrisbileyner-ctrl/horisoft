@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/pqr.controller");
-const verificarToken = require("../middlewares/authMiddleware");
+const { autorizarMetodos } = require("../middlewares/authorizationMiddleware");
+
+router.use(autorizarMetodos({
+    POST: ["Administrador", "Administrativo", "Residente"],
+    PUT: ["Administrador", "Administrativo"],
+    DELETE: ["Administrador"],
+}));
 
 // GET    /pqr                 -> listar todas, o filtrar con ?id_residencia= (público)
 // GET    /pqr/:id              -> obtener una PQR específica (público)
@@ -18,9 +24,9 @@ const verificarToken = require("../middlewares/authMiddleware");
 
 router.get("/", controller.listar);
 router.get("/:id", controller.obtener);
-router.post("/", verificarToken, controller.crear);
-router.put("/:id/respuesta", verificarToken, controller.responder);
-router.put("/:id/estado", verificarToken, controller.cambiarEstado);
-router.delete("/:id", verificarToken, controller.eliminar);
+router.post("/", controller.crear);
+router.put("/:id/respuesta", controller.responder);
+router.put("/:id/estado", controller.cambiarEstado);
+router.delete("/:id", controller.eliminar);
 
 module.exports = router;

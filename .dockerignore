@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.env
+*.sqlite3
+staticfiles/
+.vscode/
+private_media/
+backend-node/node_modules/
+app-movil/.gradle/
+app-movil/app/build/

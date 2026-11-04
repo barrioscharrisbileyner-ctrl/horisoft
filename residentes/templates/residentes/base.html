@@ -21,19 +21,51 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-horisoft mb-4">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'residentes:inicio' %}">
+      <a class="navbar-brand" href="{% url 'usuarios:inicio' %}">
         <i class="fa-solid fa-building-shield"></i>Horisoft <small class="fw-normal">administración de PH</small>
       </a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav">
+      {% if user.is_authenticated %}
+      <div class="collapse navbar-collapse show">
+        <ul class="navbar-nav me-auto">
+          {% if ve_residentes %}
           <li class="nav-item"><a class="nav-link {% if seccion == 'personas' %}active{% endif %}" href="{% url 'residentes:personas' %}">Residentes</a></li>
           <li class="nav-item"><a class="nav-link {% if seccion == 'unidades' %}active{% endif %}" href="{% url 'residentes:unidades' %}">Unidades</a></li>
           <li class="nav-item"><a class="nav-link {% if seccion == 'residencias' %}active{% endif %}" href="{% url 'residentes:residencias' %}">Residencias</a></li>
+          {% endif %}
+          {% if ve_reservas %}
+          <li class="nav-item"><a class="nav-link {% if seccion == 'zonas' %}active{% endif %}" href="{% url 'reservas:zonas' %}">Zonas comunes</a></li>
+          <li class="nav-item"><a class="nav-link {% if seccion == 'reservas' %}active{% endif %}" href="{% url 'reservas:lista' %}">Reservas</a></li>
+          {% endif %}
+          {% if ve_financiera %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'financiera:cuentas' %}">Financiera</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'financiera:multas' %}">Multas</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'financiera:convenios' %}">Convenios</a></li>
+          {% endif %}
+          {% if ve_seguridad %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'seguridad:visitantes' %}">Seguridad</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'seguridad:camaras' %}">Cámaras</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'seguridad:vehiculos' %}">Vehículos</a></li>
+          {% endif %}
+          {% if es_administrador %}
+          <li class="nav-item"><a class="nav-link {% if seccion == 'usuarios' %}active{% endif %}" href="{% url 'usuarios:lista' %}">Usuarios</a></li>
+          {% endif %}
+          {% if rol_actual == "Administrador" or rol_actual == "Administrativo" %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'usuarios:panel' %}">Panel</a></li>
+          {% endif %}
         </ul>
+        <form method="post" action="{% url 'usuarios:logout' %}" class="d-flex align-items-center">
+          {% csrf_token %}
+          <a class="navbar-text me-3 text-decoration-none" href="{% url 'usuarios:perfil' %}">{{ user.get_full_name|default:user.email }} · {{ rol_actual|default:"sin rol" }}</a>
+          <button class="btn btn-outline-light btn-sm" type="submit">Cerrar sesión</button>
+        </form>
       </div>
+      {% endif %}
     </div>
   </nav>
   <div class="container pb-5">
+    {% for mensaje in messages %}
+    <div class="alert alert-{% if mensaje.tags == 'error' %}danger{% else %}{{ mensaje.tags }}{% endif %}">{{ mensaje }}</div>
+    {% endfor %}
     {% block contenido %}{% endblock %}
   </div>
 </body>

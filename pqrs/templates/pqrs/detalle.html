@@ -1,0 +1,15 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Detalle PQR{% endblock %}
+{% block contenido %}
+  <h2>{{ pqr.asunto }}</h2>
+  <p><strong>Tipo:</strong> {{ pqr.tipo }}</p>
+  <p><strong>Estado:</strong> {{ pqr.estado }}</p>
+  <p><strong>Residencia:</strong> {{ pqr.residencia }}</p>
+  <p><strong>Descripción:</strong> {{ pqr.descripcion }}</p>
+  {% if pqr.respuesta %}
+    <p><strong>Respuesta:</strong> {{ pqr.respuesta }}</p>
+  {% endif %}
+  {% if es_admin %}
+    <a href="{% url 'pqrs:responder' pqr.pk %}" class="btn btn-primary">Responder</a>
+  {% endif %}
+{% endblock %}

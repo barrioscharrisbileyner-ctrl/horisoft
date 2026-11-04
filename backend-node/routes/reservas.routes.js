@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/reservas.controller");
-const verificarToken = require("../middlewares/authMiddleware");
+const { autorizarMetodos } = require("../middlewares/authorizationMiddleware");
+
+router.use(autorizarMetodos({
+    POST: ["Administrador", "Administrativo", "Residente"],
+    PUT: ["Administrador", "Administrativo"],
+    DELETE: ["Administrador"],
+}));
 
 // GET    /reservas               -> listar todas, o filtrar con ?id_zona= (público)
 // GET    /reservas/:id           -> obtener una reserva específica (público)
@@ -16,8 +22,8 @@ const verificarToken = require("../middlewares/authMiddleware");
 
 router.get("/", controller.listar);
 router.get("/:id", controller.obtener);
-router.post("/", verificarToken, controller.crear);
-router.put("/:id/estado", verificarToken, controller.cambiarEstado);
-router.delete("/:id", verificarToken, controller.eliminar);
+router.post("/", controller.crear);
+router.put("/:id/estado", controller.cambiarEstado);
+router.delete("/:id", controller.eliminar);
 
 module.exports = router;

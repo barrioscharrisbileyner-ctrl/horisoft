@@ -1,0 +1,16 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Pagos{% endblock %}
+{% block contenido %}
+<h1 class="h3 mb-3">Pagos</h1>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>Cuenta</th><th>Residencia</th><th>Valor</th><th>Método</th><th>Fecha</th></tr></thead>
+    <tbody>
+      {% for pago in pagos %}
+      <tr><td>{{ pago.cuenta.concepto }}</td><td>{{ pago.cuenta.residencia }}</td><td>{{ pago.valor_pagado }}</td><td>{{ pago.metodo_pago }}</td><td>{{ pago.fecha_pago }}</td></tr>
+      {% empty %}<tr><td colspan="5">No hay pagos registrados.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "residentes/paginacion.html" %}
+{% endblock %}

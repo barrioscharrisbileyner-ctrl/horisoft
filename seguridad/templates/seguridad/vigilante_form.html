@@ -1,0 +1,10 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Nuevo vigilante{% endblock %}
+{% block contenido %}
+<h2>Nuevo vigilante</h2>
+<form method="post" class="card card-body">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success align-self-start">Guardar</button>
+</form>
+{% endblock %}

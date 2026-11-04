@@ -1,0 +1,22 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Vehículos{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Vehículos</h1>
+  {% if puede_gestionar or es_residente %}<a class="btn btn-success" href="{% url 'seguridad:vehiculo_crear' %}">Registrar vehículo</a>{% endif %}
+</div>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>Placa</th><th>Tipo</th><th>Residencia</th>{% if puede_gestionar %}<th>Acciones</th>{% endif %}</tr></thead>
+    <tbody>
+      {% for vehiculo in vehiculos %}
+      <tr>
+        <td>{{ vehiculo.placa }}</td><td>{{ vehiculo.tipo }}</td><td>{{ vehiculo.residencia }}</td>
+        {% if puede_gestionar %}<td><a href="{% url 'seguridad:vehiculo_editar' vehiculo.pk %}">Editar</a> · <a href="{% url 'seguridad:vehiculo_eliminar' vehiculo.pk %}">Eliminar</a></td>{% endif %}
+      </tr>
+      {% empty %}<tr><td colspan="4">No hay vehículos registrados.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "residentes/paginacion.html" %}
+{% endblock %}

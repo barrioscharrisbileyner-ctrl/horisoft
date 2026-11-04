@@ -12,11 +12,11 @@ le agregaron 'fecha_inicio' y 'activo' para poder controlar el historial de
 asociaciones.
 """
 from django.db import models
+from django.conf import settings
 
 
 class PropiedadHorizontal(models.Model):
-    """La copropiedad administrada por Horisoft. Normalmente existe un solo
-    registro (la copropiedad donde corre esta instancia del sistema)."""
+    """Una copropiedad administrada por Horisoft."""
     id_ph = models.AutoField(primary_key=True)
     nombre = models.CharField('Nombre de la copropiedad', max_length=150)
     nit = models.CharField('NIT', max_length=30, blank=True)
@@ -37,6 +37,12 @@ class Persona(models.Model):
     nombre = models.CharField('Nombre completo', max_length=150)
     telefono = models.CharField('Teléfono', max_length=20, blank=True)
     email = models.EmailField('Correo electrónico', blank=True)
+    propiedades = models.ManyToManyField(
+        PropiedadHorizontal,
+        blank=True,
+        related_name='personas',
+        verbose_name='Propiedades horizontales',
+    )
 
     class Meta:
         verbose_name = 'Persona'
@@ -45,6 +51,13 @@ class Persona(models.Model):
 
     def __str__(self):
         return f'{self.nombre} ({self.numero_documento})'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.propiedades.exists():
+            propiedades = list(PropiedadHorizontal.objects.order_by('pk')[:2])
+            if len(propiedades) == 1:
+                self.propiedades.add(propiedades[0])
 
 
 class UnidadResidencial(models.Model):
@@ -113,3 +126,35 @@ class Residencia(models.Model):
 
     def __str__(self):
         return f'{self.persona.nombre} -> {self.unidad.numero_unidad} ({self.rol})'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.persona.propiedades.add(self.unidad.propiedad_horizontal)
+
+
+class AccesoPropiedad(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='accesos_propiedad',
+    )
+    propiedad_horizontal = models.ForeignKey(
+        PropiedadHorizontal,
+        on_delete=models.CASCADE,
+        related_name='accesos_usuario',
+    )
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['propiedad_horizontal__nombre', 'usuario__email']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['usuario', 'propiedad_horizontal'],
+                name='acceso_usuario_propiedad_unico',
+            ),
+        ]
+        verbose_name = 'Acceso a copropiedad'
+        verbose_name_plural = 'Accesos a copropiedades'
+
+    def __str__(self):
+        return f'{self.usuario} · {self.propiedad_horizontal}'

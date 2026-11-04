@@ -1,0 +1,15 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Mi perfil{% endblock %}
+{% block contenido %}
+<h1 class="h4 mb-3">Mi perfil</h1>
+<div class="card card-body shadow-sm" style="max-width:520px">
+  <dl class="row mb-0">
+    <dt class="col-sm-4">Nombre</dt><dd class="col-sm-8">{{ user.get_full_name|default:"—" }}</dd>
+    <dt class="col-sm-4">Correo</dt><dd class="col-sm-8">{{ user.email }}</dd>
+    <dt class="col-sm-4">Rol</dt><dd class="col-sm-8">{{ rol_actual|default:"Sin rol asignado" }}</dd>
+    {% if user.perfil.persona %}
+    <dt class="col-sm-4">Persona</dt><dd class="col-sm-8">{{ user.perfil.persona }}</dd>
+    {% endif %}
+  </dl>
+</div>
+{% endblock %}

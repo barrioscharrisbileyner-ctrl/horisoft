@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Horisoft</string>
+
+    <!-- Pantalla de Login -->
+    <string name="login_titulo">Horisoft</string>
+    <string name="login_subtitulo">Administración de propiedad horizontal</string>
+    <string name="login_hint_correo">Correo electrónico</string>
+    <string name="login_hint_password">Contraseña</string>
+    <string name="login_boton_ingresar">Ingresar</string>
+    <string name="login_cargando">Validando credenciales…</string>
+    <string name="login_error_campos_vacios">Ingresa tu correo y tu contraseña</string>
+    <string name="login_error_credenciales">Correo o contraseña incorrectos</string>
+    <string name="login_error_conexion">No se pudo conectar con el servidor. Verifica tu red e inténtalo de nuevo.</string>
+
+    <!-- Sesión -->
+    <string name="sesion_expirada">Tu sesión expiró. Inicia sesión de nuevo.</string>
+
+    <!-- Pantalla de Inicio (Home) -->
+    <string name="home_bienvenida">Bienvenido</string>
+    <string name="home_rol_prefijo">Rol: </string>
+    <string name="home_boton_zonas">Zonas comunes</string>
+    <string name="home_boton_mis_reservas">Mis reservas</string>
+    <string name="home_boton_cerrar_sesion">Cerrar sesión</string>
+
+    <!-- Mensajes generales -->
+    <string name="error_cargar">No se pudo cargar la información.</string>
+    <string name="boton_reintentar">Reintentar</string>
+
+    <!-- Zonas comunes -->
+    <string name="zonas_titulo">Zonas comunes</string>
+    <string name="zonas_vacio">Aún no hay zonas comunes registradas.</string>
+    <string name="zona_capacidad">Capacidad: %1$d personas</string>
+    <string name="zona_costo">Costo: $%1$s</string>
+    <string name="zona_sin_costo">Sin costo</string>
+    <string name="zona_boton_reservar">Reservar</string>
+    <string name="zona_no_disponible">No disponible</string>
+    <string name="zona_solo_residentes">Solo para residentes</string>
+
+    <!-- Reserva -->
+    <string name="reserva_titulo">Nueva reserva</string>
+    <string name="reserva_hint_fecha">Fecha (toca para elegir)</string>
+    <string name="reserva_hint_hora_inicio">Hora de inicio</string>
+    <string name="reserva_hint_hora_fin">Hora de fin</string>
+    <string name="reserva_hint_observaciones">Observaciones (opcional)</string>
+    <string name="reserva_boton_confirmar">Confirmar reserva</string>
+    <string name="reserva_error_campos">Elige la fecha, la hora de inicio y la hora de fin.</string>
+    <string name="reserva_error_horas">La hora de fin debe ser posterior a la hora de inicio.</string>
+    <string name="reserva_creada">Reserva creada correctamente</string>
+
+    <!-- Mis reservas -->
+    <string name="reservas_titulo">Mis reservas</string>
+    <string name="reservas_vacio">Tu residencia aún no tiene reservas.</string>
+    <string name="reserva_zona_generica">Zona #%1$d</string>
+    <string name="reserva_horario">%1$s  ·  %2$s – %3$s</string>
+    <string name="reserva_boton_cancelar">Cancelar reserva</string>
+    <string name="reserva_cancelar_titulo">Cancelar reserva</string>
+    <string name="reserva_cancelar_mensaje">¿Seguro que quieres cancelar esta reserva?</string>
+    <string name="reserva_cancelar_si">Sí, cancelar</string>
+    <string name="reserva_cancelar_no">No</string>
+    <string name="reserva_cancelada">Reserva cancelada</string>
+</resources>

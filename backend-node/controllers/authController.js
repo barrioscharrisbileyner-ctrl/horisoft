@@ -8,8 +8,7 @@ class AuthController {
 
     obtener(req, res) {
         try {
-            const { password, ...usuario } = authService.obtenerPorId(req.params.id);
-            res.json(usuario);
+            res.json(authService.obtenerPorId(req.params.id));
         } catch (error) {
             res.status(404).json({ mensaje: error.message });
         }

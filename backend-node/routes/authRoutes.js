@@ -3,6 +3,7 @@ const router = express.Router();
 
 const controller = require("../controllers/authController");
 const verificarToken = require("../middlewares/authMiddleware");
+const { exigirRoles } = require("../middlewares/authorizationMiddleware");
 
 // POST   /auth/registro   -> crear un usuario
 // POST   /auth/login      -> autenticar un usuario y generar el Token JWT
@@ -13,7 +14,7 @@ const verificarToken = require("../middlewares/authMiddleware");
 // que es la ruta protegida "equivalente a /api/fichas" pedida en el
 // ejercicio.
 
-router.post("/registro", controller.registrar);
+router.post("/registro", verificarToken, exigirRoles("Administrador"), controller.registrar);
 router.post("/login", controller.login);
 router.get("/perfil", verificarToken, controller.perfil);
 

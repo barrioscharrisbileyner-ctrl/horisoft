@@ -47,6 +47,7 @@ npm install
 npm run dev      # con nodemon (ejecuta server.js)
 # o
 npm start        # ejecuta server.js directamente
+npm test         # suites de integración JWT y módulos
 ```
 
 Verás en la consola: `HORISOFT escuchando en http://localhost:3000`
@@ -89,7 +90,7 @@ curl -X POST http://localhost:3000/reservas -H "Content-Type: application/json" 
 curl -X POST http://localhost:3000/visitantes -H "Content-Type: application/json" \
   -d '{"nombre":"Ana Gomez","documento":"111222333","id_residencia":5,"id_vigilante":1}'
 
-# Autenticación
+# Autenticación (credenciales demo solo con NODE_ENV=development o test)
 curl -X POST http://localhost:3000/auth/login -H "Content-Type: application/json" \
   -d '{"correo":"admin@horisoft.com","password":"admin123"}'
 
@@ -106,12 +107,12 @@ crear una reserva (depende de `zonasComunes.service`), registrar un pago
 (depende de `cuentasCobro.service`) y registrar el ingreso de un visitante
 (depende de `vigilantes.service`) — todo dentro del mismo servidor y puerto.
 
-## 7. Próximos pasos sugeridos
+## 7. Alcance y limitaciones
 
-- Migrar la capa `data/` a MySQL, manteniendo intactas las demás capas.
-- Agregar hashing de contraseñas (bcrypt) en Autenticación.
-- Integrar `id_residencia` / `id_usuario` con el módulo real de Residentes
-  y Unidades (Django) para tener un único origen de verdad.
+Este directorio es un prototipo didáctico; sus arreglos en memoria no son
+persistentes ni sustituyen el backend oficial Django + MySQL. No conectarlo a
+datos reales ni usarlo como servicio de producción. Las contraseñas de las
+cuentas de demostración solo se cargan cuando `NODE_ENV` es `development` o `test`.
 
 ## 8. Módulo de Autenticación con JWT
 
@@ -140,9 +141,11 @@ horisoft/
 
 ### 8.2 Servicio de autenticación (`services/authService.js`)
 
-- `login(correo, password)`: valida credenciales y estado `Activo`; si son
-  correctas, firma un JWT con `jwt.sign()` usando `JWT_SECRET` (desde
-  `.env`) y lo devuelve junto con los datos del usuario (sin password).
+- `login(correo, password)`: valida el hash bcrypt y el estado `Activo`; si
+  son correctas, firma un JWT con `jwt.sign()` usando `JWT_SECRET` (desde
+  `.env`) y lo devuelve junto con los datos del usuario (sin credenciales).
+- Las claves se almacenan en `passwordHash` con `bcryptjs` (factor 12).
+  Ninguna respuesta de usuario incluye `password` ni `passwordHash`.
 - `generarToken(usuario)`: encapsula la firma del token. El payload incluye
   solo lo necesario para autorizar (`id_usuario`, `correo`, `rol`) — nunca
   el password.
@@ -154,10 +157,10 @@ horisoft/
 
 | Método | Ruta | Protegida | Descripción |
 |--------|------|-----------|-------------|
-| POST | `/auth/registro` | No | Crea un usuario nuevo |
+| POST | `/auth/registro` | Sí, Administrador | Crea un usuario nuevo |
 | POST | `/auth/login` | No | Valida credenciales y devuelve el Token JWT |
 | GET | `/auth/perfil` | Sí | Ruta de prueba: devuelve el payload del token decodificado |
-| GET | `/usuarios` | Sí | Ruta protegida "equivalente a /api/fichas" del ejercicio |
+| GET | `/usuarios` | Sí, Administrador | Consulta y gestiona usuarios |
 
 ### 8.4 Middleware de autenticación (`middlewares/authMiddleware.js`)
 
@@ -174,7 +177,7 @@ Se aplica como segundo argumento de cualquier ruta que se quiera proteger:
 router.get("/", verificarToken, controller.listar);
 ```
 
-### 8.5 Buenas prácticas aplicadas
+### 8.5 Seguridad y permisos
 
 - **Separación de responsabilidades**: el middleware solo valida el token;
   el service solo firma/verifica reglas de negocio; el controller solo
@@ -184,15 +187,22 @@ router.get("/", verificarToken, controller.listar);
 - **Mensajes de error sin filtrar información sensible**: "Credenciales
   inválidas" no revela si el correo existe o no, para evitar enumeración
   de cuentas.
-- **El password nunca se expone**: ni en las respuestas de login/registro
-  ni en el listado de usuarios (se excluye explícitamente con
-  desestructuración `{ password, ...resto }`).
+- **Hash de contraseñas**: `bcryptjs` con factor 12; solo se conserva el hash
+  y se verifica mediante comparación bcrypt.
+- **Sin cuentas demo fuera de desarrollo/pruebas**: salvo que
+  `NODE_ENV=development` o `NODE_ENV=test`, el arranque exige
+  `HORISOFT_ADMIN_EMAIL` y `HORISOFT_ADMIN_PASSWORD` (mínimo 12 caracteres)
+  para crear el administrador inicial. No hay fallback a claves conocidas.
+- **Roles granulares**: `/auth/registro` y `/usuarios` son exclusivos de
+  Administrador; Administrativo gestiona operaciones permitidas por módulo;
+  Residente puede crear reservas y PQR; Vigilante puede registrar ingreso y
+  salida de visitantes; Proveedor no puede escribir. Las lecturas de los
+  módulos de este prototipo siguen públicas, salvo los datos de `/usuarios`.
+- **El password y su hash nunca se exponen** en login, registro o listados.
 - **Expiración del token**: `JWT_EXPIRES_IN` (1h por defecto) limita la
   ventana de uso de un token robado o filtrado.
-- **Pruebas automatizadas del flujo completo**: `pruebas-jwt.js` levanta
-  el servidor real y prueba los 4 escenarios exigidos (login correcto,
-  login incorrecto, ruta protegida sin token, con token inválido y con
-  token válido) más casos de formato de header.
+- **Cierre ordenado**: `server.js` escucha SIGINT/SIGTERM, deja de aceptar
+  conexiones y cierra el servidor sin `process.exit()`.
 
 ### 8.6 Cómo probarlo
 
@@ -200,10 +210,10 @@ router.get("/", verificarToken, controller.listar);
 npm install
 npm run dev
 
-# Pruebas automáticas del flujo JWT completo
-node pruebas-jwt.js
+# Ejecutar todas las pruebas de integración
+npm test
 
-# Login manual (equivalente a la prueba en Postman)
+# Login manual de demostración (solo fuera de producción)
 curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"correo":"admin@horisoft.com","password":"admin123"}'
@@ -220,29 +230,30 @@ curl http://localhost:3000/usuarios -H "Authorization: Bearer <token_obtenido_en
 Siguiendo el mismo `authMiddleware.js`, las operaciones de escritura de estos
 dos módulos ahora exigen un Token JWT válido; la lectura permanece pública:
 
-| Método y ruta | Protegida | Motivo |
+| Método y ruta | Permiso |
 |---|---|---|
-| GET /zonas-comunes, GET /zonas-comunes/:id | No | Consultar disponibilidad es público |
-| POST/PUT/DELETE /zonas-comunes/... | Sí | Gestión administrativa |
-| GET /reservas, GET /reservas/:id | No | Consultar reservas es público |
-| POST/PUT/DELETE /reservas/... | Sí | Un residente debe estar autenticado para reservar |
+| GET /zonas-comunes y GET /reservas | Público | Lectura del prototipo |
+| POST /zonas-comunes | Administrador, Administrativo | Gestión de catálogo |
+| POST /reservas | Administrador, Administrativo, Residente | Crear reserva |
+| PUT /reservas/:id/estado | Administrador, Administrativo | Gestionar estado |
+| DELETE /reservas/:id | Administrador | Eliminar |
 
 ```bash
 node pruebas-jwt-modulos.js
 ```
 
-Resultado esperado: 7 pruebas correctas, 0 fallidas (CP-MOD-01 a CP-MOD-07).
+Última ejecución: 8 pruebas correctas, 0 fallidas.
 
 ## 11. PQR — protegido con JWT
 
 Mismo criterio: lectura pública, escritura protegida.
 
-| Método y ruta | Protegida | Motivo |
+| Método y ruta | Permiso |
 |---|---|---|
-| GET /pqr, GET /pqr/:id | No | Consultar PQR es público |
-| POST /pqr | Sí | El residente debe estar autenticado para reportar |
-| PUT /pqr/:id/respuesta, PUT /pqr/:id/estado | Sí | Acción administrativa |
-| DELETE /pqr/:id | Sí | Acción administrativa |
+| GET /pqr | Público | Lectura del prototipo |
+| POST /pqr | Administrador, Administrativo, Residente | Radicar PQR |
+| PUT /pqr/:id/respuesta, PUT /pqr/:id/estado | Administrador, Administrativo | Gestionar PQR |
+| DELETE /pqr/:id | Administrador | Eliminar |
 
 ```bash
 node pruebas-jwt-pqr.js
@@ -250,43 +261,51 @@ node pruebas-jwt-pqr.js
 
 Resultado esperado: 6 pruebas correctas, 0 fallidas (CP-PQR-01 a CP-PQR-06).
 
-## 12. Los 9 módulos restantes — protegidos con JWT
+## 12. Roles por módulo
 
-Con esta iteración, **los 14 módulos de Horisoft quedan con el mismo criterio de
-seguridad aplicado de forma consistente**: lectura (GET) pública, escritura
-(POST/PUT/DELETE) protegida con Token JWT.
+Las operaciones de escritura exigen JWT y autorización por rol. Las rutas GET
+del prototipo son públicas, excepto `/usuarios`; `HEAD` hereda el permiso de
+GET y no permite eludir la protección.
 
-| Módulo | Rutas protegidas |
+| Módulo | Permisos de escritura |
 |---|---|
-| Financiera — Cuentas de Cobro | POST, PUT /:id/vencida, DELETE |
-| Financiera — Pagos | POST |
-| Comunicaciones | POST, PUT /:id/archivar, DELETE |
-| Gestión Documental | POST, DELETE |
-| Seguridad — Vigilantes | POST, PUT /:id/estado, DELETE |
-| Seguridad — Visitantes | POST, PUT /:id/salida, DELETE |
-| Seguridad — Vehículos | POST, PUT /:id/estado, DELETE |
-| Inventario | POST, PUT /:id/cantidad, PUT /:id/estado, DELETE |
-| Proveedores | POST, PUT /:id/estado, DELETE |
-| Configuración | POST, PUT /:clave, DELETE |
+| Usuarios y registro | Administrador |
+| Zonas, vigilantes, vehículos, proveedores, inventario, cuentas, pagos, documentos, comunicados | Administrador y Administrativo (eliminación: Administrador) |
+| Reservas y PQR | Residente puede crear; Administrador/Administrativo gestionan |
+| Visitantes | Vigilante puede registrar ingreso/salida; Administrador/Administrativo también |
+| Configuración | Administrador |
+| Proveedor | Sin escrituras |
 
 ```bash
-node pruebas-jwt-resto.js
+npm test
 ```
-
-Resultado esperado: 29 pruebas correctas, 0 fallidas.
 
 ### Resumen de todas las pruebas del proyecto
 
 | Archivo | Casos | Cubre |
 |---|---|---|
-| pruebas-jwt.js | 11 | Autenticación + Usuarios |
-| pruebas-jwt-modulos.js | 7 | Zonas Comunes + Reservas |
+| pruebas-jwt.js | 22 | Autenticación, roles, hashes y arranque de producción |
+| pruebas-jwt-modulos.js | 8 | Zonas Comunes + Reservas |
 | pruebas-jwt-pqr.js | 6 | PQR |
+| pruebas-jwt-residencia.js | 7 | Residencia y reservas |
 | pruebas-jwt-resto.js | 29 | Financiera, Comunicaciones, Documentos, Seguridad, Inventario, Proveedores, Configuración |
 | pruebas-manuales.js | 33 | Reglas de negocio de los 14 módulos (sin JWT) |
-| **Total JWT** | **53** | **Los 14 módulos, con acceso público de lectura y escritura protegida** |
+| **Total `npm test`** | **72** | **Integración JWT, módulos y permisos** |
 
-## 13. Control de versiones
+La cantidad de aserciones se debe contrastar con la salida real de `npm test`;
+las pruebas manuales no forman parte del total automatizado.
+
+## 13. Auditoría de dependencias y límite de producción
+
+La última auditoría reportó **0 vulnerabilidades en dependencias de
+producción** (`npm audit --omit=dev`). La auditoría completa aún informa dos
+advisories moderados de `minimatch`, transitivo de `nodemon`; npm propone como
+arreglo forzado instalar `nodemon@1.0.2`, un downgrade incompatible, por lo
+que no se aplicó. Revisar la actualización de esa cadena antes de usar
+`npm run dev`. Este backend conserva datos en memoria y no está aprobado para
+despliegue productivo.
+
+## 14. Control de versiones
 
 Este proyecto se entrega versionado con Git (no como un .zip suelto). El
 historial de commits documenta la construcción por etapas: estructura base →
@@ -300,5 +319,3 @@ Para conectarlo a un repositorio remoto en GitHub:
 git remote add origin https://github.com/<tu-usuario>/<tu-repo>.git
 git push -u origin main
 ```
-
-

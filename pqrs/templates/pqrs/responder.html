@@ -1,0 +1,12 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Responder PQR{% endblock %}
+{% block contenido %}
+  <h2>Responder PQR</h2>
+  <p><strong>Asunto:</strong> {{ pqr.asunto }}</p>
+  <p><strong>Descripción:</strong> {{ pqr.descripcion }}</p>
+  <form method="post" class="card card-body">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success align-self-start">Guardar respuesta</button>
+  </form>
+{% endblock %}

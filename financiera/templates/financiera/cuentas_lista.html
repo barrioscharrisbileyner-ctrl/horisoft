@@ -1,0 +1,19 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Cuentas de cobro{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Cuentas de cobro</h1>
+  {% if rol_actual == "Administrador" or rol_actual == "Administrativo" %}<a class="btn btn-success" href="{% url 'financiera:cuenta_crear' %}">Nueva cuenta</a>{% endif %}
+</div>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>Concepto</th><th>Residencia</th><th>Valor</th><th>Saldo</th><th>Vencimiento</th><th>Estado</th></tr></thead>
+    <tbody>
+      {% for cuenta in cuentas %}
+      <tr><td>{{ cuenta.concepto }}</td><td>{{ cuenta.residencia }}</td><td>{{ cuenta.valor }}</td><td>{{ cuenta.saldo_pendiente }}</td><td>{{ cuenta.fecha_vencimiento }}</td><td>{{ cuenta.estado }}</td></tr>
+      {% empty %}<tr><td colspan="6">No hay cuentas de cobro.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "residentes/paginacion.html" %}
+{% endblock %}

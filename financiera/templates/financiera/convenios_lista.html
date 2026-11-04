@@ -1,0 +1,22 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Convenios de pago{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Convenios de pago</h1>
+  {% if puede_gestionar %}<a class="btn btn-success" href="{% url 'financiera:convenio_crear' %}">Crear convenio</a>{% endif %}
+</div>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>Cuenta</th><th>Residencia</th><th>Cuotas</th><th>Valor cuota</th><th>Total</th><th>Estado</th>{% if puede_gestionar %}<th>Acciones</th>{% endif %}</tr></thead>
+    <tbody>
+      {% for convenio in convenios %}
+      <tr>
+        <td>{{ convenio.cuenta.concepto }}</td><td>{{ convenio.cuenta.residencia }}</td><td>{{ convenio.cuotas }}</td><td>{{ convenio.valor_cuota }}</td><td>{{ convenio.valor_total }}</td><td>{{ convenio.estado }}</td>
+        {% if puede_gestionar %}<td><a href="{% url 'financiera:convenio_editar' convenio.pk %}">Editar</a> · <a href="{% url 'financiera:convenio_eliminar' convenio.pk %}">Eliminar</a></td>{% endif %}
+      </tr>
+      {% empty %}<tr><td colspan="7">No hay convenios registrados.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "residentes/paginacion.html" %}
+{% endblock %}

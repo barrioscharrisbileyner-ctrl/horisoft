@@ -1,0 +1,27 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Panel Administrativo{% endblock %}
+{% block contenido %}
+<h1 class="h3 mb-4">Panel Administrativo</h1>
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card h-100"><div class="card-body"><h2 class="h6">Cuentas pendientes</h2><p class="display-6">{{ cuentas_pendientes }}</p><a href="{% url 'financiera:cuentas' %}">Ver cuentas</a></div></div></div>
+  <div class="col-md-3"><div class="card h-100"><div class="card-body"><h2 class="h6">PQR abiertas</h2><p class="display-6">{{ pqrs_abiertas }}</p><a href="{% url 'pqrs:lista' %}">Ver PQR</a></div></div></div>
+  <div class="col-md-3"><div class="card h-100"><div class="card-body"><h2 class="h6">Reservas de hoy</h2><p class="display-6">{{ reservas_hoy }}</p><a href="{% url 'reservas:lista' %}">Ver reservas</a></div></div></div>
+  <div class="col-md-3"><div class="card h-100"><div class="card-body"><h2 class="h6">Inventario bajo mínimo</h2><p class="display-6">{{ inventario_bajo_minimo|length }}</p><a href="{% url 'inventario:inventario' %}">Ver inventario</a></div></div></div>
+</div>
+<div class="row g-4">
+  <section class="col-lg-6">
+    <h2 class="h5">Comunicados recientes</h2>
+    <ul class="list-group">
+      {% for comunicado in comunicados_recientes %}<li class="list-group-item"><strong>{{ comunicado.titulo }}</strong><div>{{ comunicado.fecha_publicacion }}</div></li>
+      {% empty %}<li class="list-group-item">No hay comunicados publicados.</li>{% endfor %}
+    </ul>
+  </section>
+  <section class="col-lg-6">
+    <h2 class="h5">Inventario bajo mínimo</h2>
+    <ul class="list-group">
+      {% for item in inventario_bajo_minimo %}<li class="list-group-item">{{ item.nombre }}: {{ item.cantidad }} (mínimo {{ item.cantidad_minima }})</li>
+      {% empty %}<li class="list-group-item">No hay elementos por debajo del mínimo.</li>{% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}

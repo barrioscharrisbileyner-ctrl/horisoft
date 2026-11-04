@@ -69,7 +69,11 @@ class ReservasService {
         }
 
         // Regla 3: la fecha no puede ser en el pasado
-        const hoy = new Date().toISOString().split("T")[0];
+        // Fecha local (no UTC): en Colombia (UTC-5), después de las 7 p.m. la fecha UTC
+        // ya es la de mañana y rechazaba reservas de "hoy" como si fueran pasadas.
+        const ahora = new Date();
+        const hoy = new Date(ahora.getTime() - ahora.getTimezoneOffset() * 60000)
+            .toISOString().split("T")[0];
         if (fecha < hoy) {
             throw new Error("No se pueden crear reservas en fechas pasadas");
         }

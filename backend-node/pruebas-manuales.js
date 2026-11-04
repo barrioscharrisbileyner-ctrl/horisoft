@@ -11,7 +11,15 @@
  * ------------------------------------------------------------------
  */
 
+process.env.NODE_ENV = "test";
 const { llamar } = require("./test-harness");
+
+// Fecha de reserva calculada (no fija): una fecha escrita a mano termina quedando en el
+// pasado y la regla "no reservar en fechas pasadas" hace fallar la prueba (ver INC-03).
+const _ahora = new Date();
+const FECHA_FUTURA = new Date(_ahora.getTime() - _ahora.getTimezoneOffset() * 60000 + 7 * 24 * 60 * 60 * 1000)
+    .toISOString().split("T")[0];
+
 require("dotenv").config(); // authService.js exige JWT_SECRET; este archivo no pasa por app.js.
 
 const zonasCtrl = require("./controllers/zonasComunes.controller");
@@ -40,10 +48,10 @@ llamar("POST /zonas-comunes (falta capacidad -> error)", zonasCtrl, "crear", {
 
 console.log("\n========== MODULO: RESERVAS ==========");
 llamar("POST /reservas (reserva valida)", reservasCtrl, "crear", {
-    body: { id_zona: 1, id_residencia: 101, fecha: "2026-08-01", hora_inicio: "10:00", hora_fin: "12:00", observaciones: "Prueba" },
+    body: { id_zona: 1, id_residencia: 101, fecha: FECHA_FUTURA, hora_inicio: "10:00", hora_fin: "12:00", observaciones: "Prueba" },
 });
 llamar("POST /reservas (cruce de horario -> error)", reservasCtrl, "crear", {
-    body: { id_zona: 1, id_residencia: 102, fecha: "2026-08-01", hora_inicio: "11:00", hora_fin: "13:00" },
+    body: { id_zona: 1, id_residencia: 102, fecha: FECHA_FUTURA, hora_inicio: "11:00", hora_fin: "13:00" },
 });
 llamar("PUT /reservas/1/estado (Confirmada)", reservasCtrl, "cambiarEstado", {
     params: { id: 1 }, body: { estado: "Confirmada" },

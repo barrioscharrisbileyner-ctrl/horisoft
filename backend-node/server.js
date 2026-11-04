@@ -10,6 +10,31 @@ const app = require("./app");
 
 const PUERTO = process.env.PORT || 3000;
 
-app.listen(PUERTO, () => {
+const servidor = app.listen(PUERTO, () => {
     console.log(`HORISOFT escuchando en http://localhost:${PUERTO}`);
 });
+
+let apagando = false;
+
+function apagarServidor(signal) {
+    if (apagando) return;
+    apagando = true;
+    console.log(`Señal ${signal} recibida; cerrando servidor HTTP...`);
+
+    servidor.close(error => {
+        if (error) {
+            console.error("No se pudo cerrar el servidor HTTP correctamente:", error);
+            process.exitCode = 1;
+            return;
+        }
+        console.log("Servidor HTTP cerrado correctamente.");
+    });
+}
+
+servidor.on("error", error => {
+    console.error("Error del servidor HTTP:", error);
+    process.exitCode = 1;
+});
+
+process.on("SIGINT", () => apagarServidor("SIGINT"));
+process.on("SIGTERM", () => apagarServidor("SIGTERM"));

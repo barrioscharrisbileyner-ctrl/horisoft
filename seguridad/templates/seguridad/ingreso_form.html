@@ -1,0 +1,10 @@
+{% extends "residentes/base.html" %}
+{% block titulo %}Registrar ingreso{% endblock %}
+{% block contenido %}
+<h2>Registrar ingreso de visitante</h2>
+<form method="post" class="card card-body">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success align-self-start">Registrar</button>
+</form>
+{% endblock %}
